@@ -6,7 +6,10 @@
     "prefer-stable": true,
     "license": "proprietary",
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.2"
+        }
     },
     "autoload": {
         "psr-4": {
