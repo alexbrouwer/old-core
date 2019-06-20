@@ -7,7 +7,7 @@ PROJECT_NAME = $(notdir $(PWD))
 
 # Note. If you change this, you also need to update docker-compose.yml.
 # only useful in a setting with multiple services/ makefiles.
-SERVICE_TARGET := main
+SERVICE_TARGET := workspace
 
 # if vars not set specifially: try default to environment, else fixed value.
 # strip to ensure spaces are removed in future editorial mistakes.
