@@ -7,7 +7,7 @@ PROJECT_NAME = $(notdir $(PWD))
 
 # Note. If you change this, you also need to update docker-compose.yml.
 # only useful in a setting with multiple services/ makefiles.
-SERVICE_TARGET := workspace
+SERVICE_TARGET := main
 
 # if vars not set specifially: try default to environment, else fixed value.
 # strip to ensure spaces are removed in future editorial mistakes.
@@ -25,7 +25,6 @@ endif
 
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 CMD_ARGUMENTS ?= $(cmd)
-DOCKER_COMPOSE = docker-compose -f ./.docker/docker-compose.yml --project-directory ./.docker
 
 # export such that its passed to shell functions for Docker to pick up.
 export PROJECT_NAME
@@ -47,10 +46,10 @@ export HOST_UID
 shell:
 ifeq ($(CMD_ARGUMENTS),)
 	# no command is given, default to shell
-	$(DOCKER_COMPOSE) -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh
+	docker-compose -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh
 else
 	# run the command
-	$(DOCKER_COMPOSE) -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh -c "$(CMD_ARGUMENTS)"
+	docker-compose -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh -c "$(CMD_ARGUMENTS)"
 endif
 
 # Regular Makefile part for buildpypi itself
@@ -75,11 +74,11 @@ help:
 
 rebuild:
 	# force a rebuild by passing --no-cache
-	$(DOCKER_COMPOSE) build --no-cache $(SERVICE_TARGET)
+	docker-compose build --no-cache $(SERVICE_TARGET)
 
 service:
 	# run as a (background) service
-	$(DOCKER_COMPOSE) -p $(PROJECT_NAME)_$(HOST_UID) up -d $(SERVICE_TARGET)
+	docker-compose -p $(PROJECT_NAME)_$(HOST_UID) up -d $(SERVICE_TARGET)
 
 login: service
 	# run as a service and attach to it
@@ -87,11 +86,11 @@ login: service
 
 build:
 	# only build the container. Note, docker does this also if you apply other targets.
-	$(DOCKER_COMPOSE) build $(SERVICE_TARGET)
+	docker-compose build $(SERVICE_TARGET)
 
 clean:
 	# remove created images
-	@$(DOCKER_COMPOSE) -p $(PROJECT_NAME)_$(HOST_UID) down --remove-orphans --rmi all 2>/dev/null \
+	@docker-compose -p $(PROJECT_NAME)_$(HOST_UID) down --remove-orphans --rmi all 2>/dev/null \
 	&& echo 'Image(s) for "$(PROJECT_NAME):$(HOST_USER)" removed.' \
 	|| echo 'Image(s) for "$(PROJECT_NAME):$(HOST_USER)" already removed.'
 
@@ -100,4 +99,4 @@ prune:
 	docker system prune -af
 
 test:
-	$(DOCKER_COMPOSE) -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh -c "composer verify"
+	docker-compose -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh -c 'composer test'
