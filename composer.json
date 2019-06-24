@@ -2,9 +2,9 @@
     "name": "par/core",
     "description": "Core structures",
     "type": "library",
+    "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "license": "proprietary",
     "config": {
         "sort-packages": true,
         "platform": {
