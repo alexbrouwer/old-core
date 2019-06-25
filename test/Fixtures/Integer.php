@@ -29,7 +29,7 @@ class Integer implements ComparableInterface, ObjectInterface
      */
     public function compareTo(ComparableInterface $other): int
     {
-        Assert::sameType($other, $this);
+        InstanceHelper::assertIsOfClass($other, self::class);
 
         /* @var self $other */
         return $this->value <=> $other->value;
@@ -40,7 +40,7 @@ class Integer implements ComparableInterface, ObjectInterface
      */
     public function equals($other): bool
     {
-        return InstanceHelper::isOfClass(self::class, $other) && $this->value === $other->value;
+        return InstanceHelper::isOfClass($other, self::class) && $this->value === $other->value;
     }
 
     /**

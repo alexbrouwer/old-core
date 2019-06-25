@@ -2,48 +2,40 @@
 
 namespace PAR\Core\Helper;
 
+use PAR\Core\Exception\ClassCastException;
+
 final class InstanceHelper extends HelperAbstract
 {
     /**
-     * Determines if all other instances are objects of the same class as instance
+     * Asserts if provided instance is of expected class. Throws ClassCastException if not.
      *
-     * @param object $instance          The instance to use as source
-     * @param mixed  $otherInstance     The other instance to test
-     * @param mixed  ...$otherInstances The other instances to test
+     * @param mixed  $instance      The instance to assert
+     * @param string $expectedClass The expected FQCN
      *
-     * @return bool
+     * @throws ClassCastException
      */
-    public static function isOfSameClassAs(object $instance, $otherInstance,
-        ...$otherInstances
-    ): bool {
-        $className = get_class($instance);
-
-        array_unshift($otherInstances, $otherInstance);
-
-        foreach ($otherInstances as $additionalOtherInstance) {
-            if (!static::isOfClass($className, $additionalOtherInstance)) {
-                return false;
-            }
+    public static function assertIsOfClass($instance, string $expectedClass): void
+    {
+        if (!static::isOfClass($instance, $expectedClass)) {
+            throw ClassCastException::unexpectedType($instance, $expectedClass);
         }
-
-        return true;
     }
 
     /**
-     * Determines if instance is an object of class $className
+     * Determines if instance is an object of expected class.
      *
-     * @param string $className The class name to determine
-     * @param mixed  $instance  The instance to test
+     * @param mixed  $instance      The instance to test
+     * @param string $expectedClass The expected FQCN
      *
      * @return bool
      */
-    public static function isOfClass(string $className, $instance): bool
+    public static function isOfClass($instance, string $expectedClass): bool
     {
         if (!is_object($instance)) {
             return false;
         }
 
-        return get_class($instance) === $className;
+        return get_class($instance) === $expectedClass;
     }
 
     /**

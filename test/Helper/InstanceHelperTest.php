@@ -11,12 +11,12 @@ class InstanceHelperTest extends TestCase
 {
     public function testIsOfClassWithClassInstanceIsTruthy(): void
     {
-        $this->assertTrue(InstanceHelper::isOfClass(Integer::class, Integer::fromNative(1)));
+        $this->assertTrue(InstanceHelper::isOfClass(Integer::fromNative(1), Integer::class));
     }
 
     public function testIsOfClassWithDifferentInstanceIsFalsy(): void
     {
-        $this->assertFalse(InstanceHelper::isOfClass(Integer::class, new stdClass()));
+        $this->assertFalse(InstanceHelper::isOfClass(new stdClass(), Integer::class));
     }
 
     public function testIsOfClassWithNonObjectIsFalsy(): void
