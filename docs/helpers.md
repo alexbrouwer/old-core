@@ -68,7 +68,7 @@ InstanceHelper::toString
 
 ```php
 $instance = new \stdClass();
-\PAR\Core\Helper\InstanceHelper::toString($instance); // 'FQCN@hash'
+\PAR\Core\Helper\InstanceHelper::toString($instance); // 'stdClass@0000000039fd0ca80000000063089fec'
 ```
 
 InstanceHelper::hashCode
@@ -76,7 +76,7 @@ InstanceHelper::hashCode
 
 ```php
 $instance = new \stdClass();
-\PAR\Core\Helper\InstanceHelper::hashCode($instance); // string
+\PAR\Core\Helper\InstanceHelper::hashCode($instance); // '0000000039fd0ca80000000063089fec'
 ```
 
 StringHelper::typeOf
