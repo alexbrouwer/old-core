@@ -2,6 +2,7 @@
 
 namespace PARTest\Tests\Helper;
 
+use PAR\Core\Exception\ClassCastException;
 use PAR\Core\Helper\InstanceHelper;
 use PARTest\Core\Fixtures\Integer;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +23,13 @@ class InstanceHelperTest extends TestCase
     public function testIsOfClassWithNonObjectIsFalsy(): void
     {
         $this->assertFalse(InstanceHelper::isOfClass('string', Integer::class));
+    }
+
+    public function testAssertIsOfClassThrowsClassCastException(): void
+    {
+        $this->expectException(ClassCastException::class);
+
+        InstanceHelper::assertIsOfClass('not an instance', static::class);
     }
 
     public function testCanTransformInstanceToString(): void
