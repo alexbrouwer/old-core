@@ -2,6 +2,8 @@
 
 namespace PAR\Core\Helper;
 
+use PAR\Core\ObjectInterface;
+
 final class StringHelper extends HelperAbstract
 {
     /**
@@ -13,10 +15,16 @@ final class StringHelper extends HelperAbstract
      */
     public static function typeOf($data): string
     {
-        if (is_object($data)) {
-            return 'instance of ' . get_class($data);
+        $type = gettype($data);
+
+        if ($type === 'object') {
+            $type = sprintf('instance of %s', get_class($data));
+
+            if ($data instanceof ObjectInterface) {
+                $type .= '@' . $data->toString();
+            }
         }
 
-        return gettype($data);
+        return $type;
     }
 }
