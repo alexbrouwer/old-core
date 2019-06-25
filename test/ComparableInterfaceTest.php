@@ -47,22 +47,22 @@ class ComparableInterfaceTest extends TestCase
         };
 
         $this->expectException(ClassCastException::class);
-        $this->expectExceptionMessage('Type ' . get_class($other) . ' is unsupported, expected ' . Integer::class);
+        $this->expectExceptionMessage('Expected an instance of PARTest\Core\Fixtures\Integer, got instance of ' . get_class($other));
 
         $value->compareTo($other);
     }
 
     public function testComparableImplementationCanBeUsedAsSortCallback(): void
     {
-        $list = [
+        $list = Comparator::sortArray(
+            [
             Integer::fromNative(3),
             Integer::fromNative(2),
             Integer::fromNative(1),
             Integer::fromNative(4),
             Integer::fromNative(2),
-        ];
-
-        uasort($list, Comparator::callback());
+            ]
+        );
 
         $sorted = array_map(
             static function (Integer $int) {

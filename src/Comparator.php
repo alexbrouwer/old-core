@@ -10,6 +10,20 @@ final class Comparator
     }
 
     /**
+     * Sort array by ComparableInterface::compareTo
+     *
+     * @param array $array The array to sort
+     *
+     * @return array
+     */
+    public static function sortArray(array &$array): array
+    {
+        uasort($array, static::callback());
+
+        return $array;
+    }
+
+    /**
      * @return Comparator
      */
     public static function callback(): self
