@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f176d8dd6a5501abae86e55c4e1b64c",
+    "content-hash": "4de560ea30748af8b2eb540652f84219",
     "packages": [],
     "packages-dev": [
         {
@@ -871,16 +871,16 @@
         },
         {
             "name": "par/maker",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-addition-repository/maker.git",
-                "reference": "17c391748eb532747e81301f42d8bc1bf60026e8"
+                "reference": "831a8e7498b8882fb6f1e4abc7507e8ec54eafb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-addition-repository/maker/zipball/17c391748eb532747e81301f42d8bc1bf60026e8",
-                "reference": "17c391748eb532747e81301f42d8bc1bf60026e8",
+                "url": "https://api.github.com/repos/php-addition-repository/maker/zipball/831a8e7498b8882fb6f1e4abc7507e8ec54eafb8",
+                "reference": "831a8e7498b8882fb6f1e4abc7507e8ec54eafb8",
                 "shasum": ""
             },
             "type": "library",
@@ -899,7 +899,7 @@
                 "Makefile",
                 "par"
             ],
-            "time": "2019-06-24T13:42:20+00:00"
+            "time": "2019-06-25T13:25:27+00:00"
         },
         {
             "name": "phar-io/manifest",
