@@ -1,11 +1,11 @@
 <?php
 
-namespace PAR\Core\Tests;
+namespace PARTest\Core\Tests;
 
 use PAR\Core\ComparableInterface;
 use PAR\Core\Comparator;
 use PAR\Core\Exception\ClassCastException;
-use PAR\Core\Tests\Fixtures\Integer;
+use PARTest\Core\Fixtures\Integer;
 use PHPUnit\Framework\TestCase;
 
 class ComparableInterfaceTest extends TestCase
@@ -67,7 +67,8 @@ class ComparableInterfaceTest extends TestCase
         $sorted = array_map(
             static function (Integer $int) {
                 return $int->toNative();
-            }, $list
+            },
+            $list
         );
 
         $expected = [

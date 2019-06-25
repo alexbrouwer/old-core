@@ -1,6 +1,6 @@
 <?php
 
-namespace PAR\Core\Tests\Helper;
+namespace PARTest\Core\Helper;
 
 use PAR\Core\Helper\ArrayHelper;
 use PHPUnit\Framework\TestCase;

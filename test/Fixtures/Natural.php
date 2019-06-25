@@ -1,6 +1,6 @@
 <?php
 
-namespace PAR\Core\Tests\Fixtures;
+namespace PARTest\Core\Fixtures;
 
 use PAR\Core\Assert;
 

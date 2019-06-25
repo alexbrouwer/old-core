@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PAR\Core\Tests\Fixtures;
+namespace PARTest\Core\Fixtures;
 
 use PAR\Core\Assert;
 use PAR\Core\ComparableInterface;
@@ -40,7 +40,7 @@ class Integer implements ComparableInterface, ObjectInterface
      */
     public function equals($other): bool
     {
-        return InstanceHelper::isOfSameClassAs($this, $other) && $this->value === $other->value;
+        return InstanceHelper::isOfClass(self::class, $other) && $this->value === $other->value;
     }
 
     /**
