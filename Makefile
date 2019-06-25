@@ -18,4 +18,4 @@ build:
 # Test project
 test:
 	@composer validate
-	@composer check
+	@composer -- check
