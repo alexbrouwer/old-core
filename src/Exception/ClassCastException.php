@@ -3,9 +3,8 @@
 namespace PAR\Core\Exception;
 
 use PAR\Core\Helper\StringHelper;
-use RuntimeException;
 
-final class ClassCastException extends RuntimeException implements ExceptionInterface
+final class ClassCastException extends RuntimeException
 {
     /**
      * @param mixed  $data
