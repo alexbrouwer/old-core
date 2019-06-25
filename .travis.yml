@@ -46,7 +46,7 @@ install:
   - stty cols 120 && composer show
 
 script:
-  - if [[ $STATIC_ANALYSIS == 'true' ]]; then make analyse ; fi
+  - if [[ $STATIC_ANALYSIS == 'true' ]]; then make qa/phpstan ; fi
   - if [[ $TEST_COVERAGE == 'true' ]]; then make qa/phpunit/coverage ; else make qa/phpunit ; fi
   - if [[ $CS_CHECK == 'true' ]]; then make qa/phpcs ; fi
 
