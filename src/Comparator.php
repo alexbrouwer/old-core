@@ -1,6 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace PAR\Core;
+
+use PAR\Core\Exception\ClassCastException;
 
 final class Comparator
 {
@@ -16,11 +18,21 @@ final class Comparator
      *
      * @return array
      */
-    public static function sortArray(array &$array): array
+    public static function sortArray(array $array): array
     {
-        uasort($array, static::callback());
+        $sorted = array_map(
+            static function ($item, $key) {
+                if (!$item instanceof ComparableInterface) {
+                    throw ClassCastException::unexpectedTypeInArray((string)$key, $item, ComparableInterface::class);
+                }
+                return $item;
+            },
+            $array,
+            array_keys($array)
+        );
+        uasort($sorted, static::callback());
 
-        return $array;
+        return $sorted;
     }
 
     /**

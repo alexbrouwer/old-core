@@ -3,7 +3,6 @@
 namespace PARTest\Core\Tests;
 
 use PAR\Core\ComparableInterface;
-use PAR\Core\Comparator;
 use PAR\Core\Exception\ClassCastException;
 use PARTest\Core\Fixtures\Integer;
 use PHPUnit\Framework\TestCase;
@@ -50,35 +49,5 @@ class ComparableInterfaceTest extends TestCase
         $this->expectExceptionMessage('Expected an instance of PARTest\Core\Fixtures\Integer, got instance of ' . get_class($other));
 
         $value->compareTo($other);
-    }
-
-    public function testComparableImplementationCanBeUsedAsSortCallback(): void
-    {
-        $list = Comparator::sortArray(
-            [
-            Integer::fromNative(3),
-            Integer::fromNative(2),
-            Integer::fromNative(1),
-            Integer::fromNative(4),
-            Integer::fromNative(2),
-            ]
-        );
-
-        $sorted = array_map(
-            static function (Integer $int) {
-                return $int->toNative();
-            },
-            $list
-        );
-
-        $expected = [
-            2 => 1,
-            1 => 2,
-            4 => 2,
-            0 => 3,
-            3 => 4,
-        ];
-
-        $this->assertSame($expected, $sorted);
     }
 }
