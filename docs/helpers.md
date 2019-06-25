@@ -34,16 +34,16 @@ class SubItem extends Item
 
 ```
 
-\Par\Core\Helper\ClassHelper::isAbstract
-----------------------------------------
+ClassHelper::isAbstract
+-----------------------
 
 ```php
 \Par\Core\Helper\ClassHelper::isAbstract(\App\Model\Item::class); // false
 \Par\Core\Helper\ClassHelper::isAbstract(\PAR\Core\Helper\HelperAbstract::class); // true
 ```
 
-\Par\Core\Helper\InstanceHelper::isOfClass
-------------------------------------------
+InstanceHelper::isOfClass
+-------------------------
 
 ```php
 $instance = new \App\Model\Item('custom value');
@@ -53,8 +53,8 @@ $instance = new \App\Model\SubItem('custom value');
 \PAR\Core\Helper\InstanceHelper::isOfClass($instance, \App\Model\Item::class); // false
 ```
 
-\Par\Core\Helper\InstanceHelper::assertIsOfClass
-------------------------------------------------
+InstanceHelper::assertIsOfClass
+-------------------------------
 
 Same as `\Par\Core\Helper\InstanceHelper::isOfClass` but throws `\Par\Core\Exception\ClassCastException` when `false`.
 
@@ -63,24 +63,24 @@ $instance = new \App\Model\SubItem('custom value');
 \PAR\Core\Helper\InstanceHelper::assertIsOfClass($instance, \App\Model\Item::class);
 ```
 
-\Par\Core\Helper\InstanceHelper::toString
------------------------------------------
+InstanceHelper::toString
+------------------------
 
 ```php
 $instance = new \stdClass();
 \PAR\Core\Helper\InstanceHelper::toString($instance); // 'FQCN@hash'
 ```
 
-\Par\Core\Helper\InstanceHelper::hashCode
------------------------------------------
+InstanceHelper::hashCode
+------------------------
 
 ```php
 $instance = new \stdClass();
 \PAR\Core\Helper\InstanceHelper::hashCode($instance); // string
 ```
 
-\Par\Core\Helper\StringHelper::typeOf
--------------------------------------
+StringHelper::typeOf
+--------------------
 
 ```php
 \Par\Core\Helper\StringHelper::typeOf('text'); // 'string'
