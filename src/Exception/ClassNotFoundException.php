@@ -4,7 +4,7 @@ namespace PAR\Core\Exception;
 
 use Throwable;
 
-class ClassNotFoundException extends InvalidArgumentException
+final class ClassNotFoundException extends InvalidArgumentException
 {
     /**
      * Returns exception explaining that class was not found.
