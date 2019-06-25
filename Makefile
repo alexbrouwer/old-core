@@ -39,6 +39,11 @@ qa/phpstan:
 qa/phpunit:
 	@vendor/bin/phpunit --colors=always
 
+.PHONY: qa/phpunit/coverage
+## PHPUnit + Coverage
+qa/phpunit/coverage:
+	@vendor/bin/phpunit --colors=always --coverage-clover clover.xml
+
 .PHONY: test
 ## Run tests
 test: qa/phpunit
