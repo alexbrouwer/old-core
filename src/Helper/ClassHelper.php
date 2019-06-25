@@ -6,7 +6,7 @@ use PAR\Core\Exception\ClassNotFoundException;
 use ReflectionClass;
 use ReflectionException;
 
-final class ClassHelper
+final class ClassHelper extends HelperAbstract
 {
     private static $reflectionClassCache = [];
 
