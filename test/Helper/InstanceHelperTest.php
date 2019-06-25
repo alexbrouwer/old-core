@@ -21,6 +21,11 @@ class InstanceHelperTest extends TestCase
 
     public function testIsOfClassWithNonObjectIsFalsy(): void
     {
-        $this->assertFalse(InstanceHelper::isOfClass(Integer::class, 'string'));
+        $this->assertFalse(InstanceHelper::isOfClass('string', Integer::class));
+    }
+
+    public function testCanTransformInstanceToString(): void
+    {
+        $this->assertSame(sprintf('%s@%s', get_class($this), spl_object_hash($this)), InstanceHelper::toString($this));
     }
 }
