@@ -2,23 +2,24 @@
 
 namespace PAR\Core\Exception;
 
+use PAR\Core\Helper\StringHelper;
 use RuntimeException;
 
 final class ClassCastException extends RuntimeException implements ExceptionInterface
 {
     /**
-     * @param string $type
-     * @param string $expectedType
+     * @param mixed  $data
+     * @param string $expectedClass
      *
      * @return ClassCastException
      */
-    public static function unsupportedType(string $type, string $expectedType): self
+    public static function unexpectedType($data, string $expectedClass): self
     {
         return new self(
             sprintf(
-                'Type %s is unsupported, expected %s',
-                $type,
-                $expectedType
+                'Expected an instance of %s, got %s',
+                $expectedClass,
+                StringHelper::typeOf($data)
             )
         );
     }

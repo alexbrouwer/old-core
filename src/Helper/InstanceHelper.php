@@ -4,7 +4,6 @@ namespace PAR\Core\Helper;
 
 final class InstanceHelper extends HelperAbstract
 {
-
     /**
      * Determines if all other instances are objects of the same class as instance
      *
