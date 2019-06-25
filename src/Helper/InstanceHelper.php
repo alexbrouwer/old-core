@@ -48,7 +48,11 @@ final class InstanceHelper extends HelperAbstract
     }
 
     /**
-     * Returns a string consisting of the name of the class of the instance, the at-sign character "@", and the SPL object hash of the object. In other words, this method returns a string in the format: `Fully\Qualified\ClassName . '@' . spl_object_hash`
+     * Returns a string consisting of the name of the class of the instance, the at-sign character "@", and the SPL
+     * object hash of the object.
+     *
+     * In other words, this method returns a string in the format:
+     * `Fully\Qualified\ClassName . '@' . spl_object_hash`
      *
      * @param object $instance The instance to transform
      *
@@ -61,6 +65,7 @@ final class InstanceHelper extends HelperAbstract
 
     /**
      * Returns a hash code value for the object
+     *
      * @param object $instance The instance to transform
      *
      * @return string

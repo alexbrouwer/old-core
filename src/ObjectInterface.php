@@ -14,7 +14,9 @@ interface ObjectInterface
     public function equals($other): bool;
 
     /**
-     * Returns a string representation of the object. In general, the `toString` method returns a string that "textually represents" this object. The result should be a concise but informative representation that is easy for a person to read.
+     * Returns a string representation of the object. In general, the `toString` method returns a string that
+     * "textually represents" this object. The result should be a concise but informative representation that
+     * is easy for a person to read.
      *
      * A simple implementation would be:
      * ```
