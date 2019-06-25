@@ -2,7 +2,6 @@
 
 namespace PARTest\Core\Fixtures;
 
-use PAR\Core\Assert;
 use PAR\Core\ComparableInterface;
 use PAR\Core\Helper\InstanceHelper;
 use PAR\Core\ObjectInterface;
