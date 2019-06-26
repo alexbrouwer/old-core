@@ -90,3 +90,17 @@ StringHelper::typeOf
 $instance = new \App\Model\Item('custom value');
 \Par\Core\Helper\StringHelper::typeOf($instance); // 'instance of App\Model\Item@custom value
 ```
+
+InstanceHelper::isAnyOf
+-----------------------
+```php
+$instance = new \stdClass();
+\Par\Core\Helper\StringHelper::isAnyOf($instance, [new stdClass(), $instance]); // true (strict comparison)
+
+// Support for ObjectInterface
+$instance = new \App\Model\Item('value');
+\Par\Core\Helper\StringHelper::isAnyOf($instance, [new \App\Model\Item('value')]); // true (via ObjectInterface::equals)
+
+// Forgiving with input
+\Par\Core\Helper\StringHelper::isAnyOf(false, [false]); // false (only compares objects with objects)
+```
