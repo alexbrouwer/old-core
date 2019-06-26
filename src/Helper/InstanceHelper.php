@@ -3,6 +3,7 @@
 namespace PAR\Core\Helper;
 
 use PAR\Core\Exception\ClassCastException;
+use PAR\Core\ObjectInterface;
 
 final class InstanceHelper extends HelperAbstract
 {
@@ -64,5 +65,37 @@ final class InstanceHelper extends HelperAbstract
     public static function hashCode(object $instance): string
     {
         return spl_object_hash($instance);
+    }
+
+    /**
+     * Checks if instance is equals to any of those in the list
+     *
+     * @param mixed $instance  The instance to look for
+     * @param array $anyOfList The list to look in
+     *
+     * @return bool
+     */
+    public static function isAnyOf($instance, array $anyOfList): bool
+    {
+        if (!is_object($instance)) {
+            return false;
+        }
+
+        $matches = array_filter(
+            $anyOfList,
+            static function ($anyInstance) use ($instance) {
+                if (!is_object($anyInstance)) {
+                    return false;
+                }
+
+                if ($instance instanceof ObjectInterface) {
+                    return $instance->equals($anyInstance);
+                }
+
+                return $instance === $anyInstance;
+            }
+        );
+
+        return count($matches) > 0;
     }
 }

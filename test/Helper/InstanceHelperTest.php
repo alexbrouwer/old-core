@@ -36,4 +36,22 @@ class InstanceHelperTest extends TestCase
     {
         $this->assertSame(sprintf('%s@%s', get_class($this), spl_object_hash($this)), InstanceHelper::toString($this));
     }
+
+    public function testCanDetermineIfAnObjectExistsInListByStringComparison(): void
+    {
+        $instance = new stdClass();
+        $list = [new stdClass(), $instance];
+
+        $this->assertTrue(InstanceHelper::isAnyOf($instance, $list));
+        $this->assertFalse(InstanceHelper::isAnyOf(new stdClass(), $list));
+    }
+
+    public function testCanDetermineIfAnObjectExistsInListByObjectInterfaceEquals(): void
+    {
+        $instance = Integer::fromNative(1);
+        $list = [Integer::fromNative(2), $instance];
+
+        $this->assertTrue(InstanceHelper::isAnyOf($instance, $list));
+        $this->assertFalse(InstanceHelper::isAnyOf(Integer::fromNative(3), $list));
+    }
 }
