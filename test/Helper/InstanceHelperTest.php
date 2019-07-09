@@ -26,4 +26,9 @@ class InstanceHelperTest extends TestCase
         $this->assertTrue(InstanceHelper::isAnyOf($instance, $list));
         $this->assertFalse(InstanceHelper::isAnyOf(Integer::fromNative(3), $list));
     }
+
+    public function testCanTransformInstanceToString(): void
+    {
+        $this->assertSame(sprintf('%s@%s', get_class($this), spl_object_hash($this)), InstanceHelper::toString($this));
+    }
 }

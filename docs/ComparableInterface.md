@@ -51,6 +51,9 @@ class Item implements ComparableInterface
 }
 ```
 
+Comparison
+----------
+
 Comparison can be done via:
 
 ```php
@@ -63,6 +66,9 @@ $value->compareTo($same); // 0
 $value->compareTo($larger); // -1: $value < $larger
 $value->compareTo($smaller); // 1: $value > $smaller
 ```
+
+Sorting
+-------
 
 Sorting is also possible:
 

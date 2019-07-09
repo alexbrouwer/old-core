@@ -3,13 +3,11 @@ ObjectInterface
 
 Classes implementing the `Par\Core\ObjectInterface` enforce:
 - Testing for equality via `$instance::equals($otherInstance)`
-- 
+- String casting via `$instance::toString()`
 
 When using the following implementation:
 
 ```php
-
-namespace App;
 
 use PAR\Core\ObjectInterface;
 

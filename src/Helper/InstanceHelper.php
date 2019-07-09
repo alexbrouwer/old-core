@@ -55,4 +55,16 @@ final class InstanceHelper extends HelperAbstract
     {
         return is_object($actual) && get_class($expected) === get_class($actual);
     }
+
+    /**
+     * Returns a string representation of provided object.
+     *
+     * @param object $instance The instance to cast to string.
+     *
+     * @return string
+     */
+    public static function toString(object $instance): string
+    {
+        return sprintf('%s@%s', get_class($instance), spl_object_hash($instance));
+    }
 }
