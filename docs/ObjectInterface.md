@@ -11,7 +11,6 @@ When using the following implementation:
 
 namespace App;
 
-use PAR\Core\Helper\InstanceHelper;
 use PAR\Core\ObjectInterface;
 
 class Item implements ObjectInterface 
@@ -31,10 +30,20 @@ class Item implements ObjectInterface
         $this->value = $value;
     }
     
+    /**
+     * Determines if this object equals provided value.
+     *
+     * @param mixed $other The other value to compare with.
+     *
+     * @return bool
+     */
     public function equals($other) : bool
     {
-        /* @var self $other */
-        return InstanceHelper::isOfClass($other, static::class) && $this->value === $other->value;
+        if ($other instanceof self && get_class($other) === static::class) {
+            return $this->value === $other->value;
+        }
+
+        return false;
     }
     
     public function toString() : string

@@ -12,7 +12,7 @@ When using the following implementation:
 namespace App;
 
 use PAR\Core\ComparableInterface;
-use PAR\Core\Helper\InstanceHelper;
+use PAR\Core\Exception\ClassMismatchException;
 
 class Item implements ComparableInterface 
 {
@@ -31,13 +31,22 @@ class Item implements ComparableInterface
         $this->value = $value;
     }
     
+    /**
+     * Compares this object with with other object. Returns a negative integer, zero or a positive integer as this
+     * object is less than, equals to, or greater then the other object.
+     *
+     * @param ComparableInterface $other The other object to be compared.
+     *
+     * @return int
+     * @throws ClassMismatchException If the other object's type prevents it from being compared to this object.
+     */
     public function compareTo(ComparableInterface $other) : int
     {
-        // Make sure other is of same class
-        InstanceHelper::assertIsOfClass($other, static::class);
-        
-        /* @var self $other */
-        return $this->value <=> $other->value;
+        if ($other instanceof self && get_class($other) === static::class) {
+            return $this->value - $other->value;
+        }
+
+        throw ClassMismatchException::expectedInstance($this, $other);
     }    
 }
 ```
@@ -60,13 +69,19 @@ Sorting is also possible:
 Directly via PHP's `uasort` (by reference)
 
 ```php
+$list = [
+    Item::fromValue(2),
+    Item::fromValue(3),
+    Item::fromValue(1),
+];
+
 usasort($list, Par\Core\Comparator::callback());
 // $list = [1, 2, 3, ]
 ```
 
-Or via `Comparator::sortArray`, which:
- - will fail early if an value in the list does not implement the `ComparableInterface`
- - will return a new array leaving the original intact
+Or via `Comparator::sortArray`, which will:
+ - fail early if a value in the list does not implement the `ComparableInterface`
+ - return a new array leaving the original intact
 
 ```php
 $list = [

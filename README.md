@@ -14,6 +14,6 @@ composer require par/core
 Usage
 -----
 
-- [ComparableInterface](docs/ComparableInterface.md)
 - [ObjectInterface](docs/ObjectInterface.md)
+- [ComparableInterface](docs/ComparableInterface.md)
 - [Helpers](docs/helpers.md)

@@ -3,7 +3,7 @@
 namespace PARTest\Core\Tests;
 
 use PAR\Core\ComparableInterface;
-use PAR\Core\Exception\ClassCastException;
+use PAR\Core\Exception\ClassMismatchException;
 use PARTest\Core\Fixtures\Integer;
 use PHPUnit\Framework\TestCase;
 
@@ -45,8 +45,8 @@ class ComparableInterfaceTest extends TestCase
             }
         };
 
-        $this->expectException(ClassCastException::class);
-        $this->expectExceptionMessage('Expected an instance of PARTest\Core\Fixtures\Integer, got instance of ' . get_class($other));
+        $this->expectException(ClassMismatchException::class);
+        $this->expectExceptionMessage('Expected an object of type PARTest\Core\Fixtures\Integer, got instance of ' . get_class($other));
 
         $value->compareTo($other);
     }

@@ -2,10 +2,10 @@
 
 namespace PARTest\Core\Helper;
 
-use PAR\Core\Helper\StringHelper;
+use PAR\Core\Helper\FormattingHelper;
 use PHPUnit\Framework\TestCase;
 
-class StringHelperTest extends TestCase
+class FormattingHelperTest extends TestCase
 {
     /**
      * @dataProvider provideTypeOfArguments
@@ -15,7 +15,7 @@ class StringHelperTest extends TestCase
      */
     public function testTypeOfReturnsExpectedString($data, string $expectedString): void
     {
-        $this->assertSame($expectedString, StringHelper::typeOf($data));
+        $this->assertSame($expectedString, FormattingHelper::typeOf($data));
     }
 
     public function provideTypeOfArguments(): array

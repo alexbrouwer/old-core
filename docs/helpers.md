@@ -5,8 +5,6 @@ Given:
 
 ```php
 
-namespace App\Model;
-
 use Par\Core\ObjectInterface;
 
 class Item implements ObjectInterface
@@ -38,69 +36,54 @@ ClassHelper::isAbstract
 -----------------------
 
 ```php
-\Par\Core\Helper\ClassHelper::isAbstract(\App\Model\Item::class); // false
-\Par\Core\Helper\ClassHelper::isAbstract(\PAR\Core\Helper\HelperAbstract::class); // true
+\Par\Core\Helper\ClassHelper::isAbstract(Item::class);
 ```
 
-InstanceHelper::isOfClass
--------------------------
-
-```php
-$instance = new \App\Model\Item('custom value');
-\PAR\Core\Helper\InstanceHelper::isOfClass($instance, \App\Model\Item::class); // true
-
-$instance = new \App\Model\SubItem('custom value');
-\PAR\Core\Helper\InstanceHelper::isOfClass($instance, \App\Model\Item::class); // false
-```
-
-InstanceHelper::assertIsOfClass
--------------------------------
-
-Same as `\Par\Core\Helper\InstanceHelper::isOfClass` but throws `\Par\Core\Exception\ClassCastException` when `false`.
-
-```php
-$instance = new \App\Model\SubItem('custom value');
-\PAR\Core\Helper\InstanceHelper::assertIsOfClass($instance, \App\Model\Item::class);
-```
-
-InstanceHelper::toString
-------------------------
-
-```php
-$instance = new \stdClass();
-\PAR\Core\Helper\InstanceHelper::toString($instance); // 'stdClass@0000000039fd0ca80000000063089fec'
-```
-
-InstanceHelper::hashCode
-------------------------
-
-```php
-$instance = new \stdClass();
-\PAR\Core\Helper\InstanceHelper::hashCode($instance); // '0000000039fd0ca80000000063089fec'
-```
-
-StringHelper::typeOf
+ClassHelper::isFinal
 --------------------
 
 ```php
-\Par\Core\Helper\StringHelper::typeOf('text'); // 'string'
-\Par\Core\Helper\StringHelper::typeOf(new \stdClass()); // 'instance of stdClass'
+\Par\Core\Helper\ClassHelper::isFinal(Item::class);
+```
 
-// Appends class name with value of ObjectInterface::toString()
-$instance = new \App\Model\Item('custom value');
-\Par\Core\Helper\StringHelper::typeOf($instance); // 'instance of App\Model\Item@custom value
+ClassHelper::getReflectionClass
+-------------------------------
+
+```php
+\Par\Core\Helper\ClassHelper::getReflectionClass(Item::class);
+```
+
+FormattingHelper::typeOf
+------------------------
+
+```php
+\Par\Core\Helper\FormattingHelper::typeOf('text'); // 'string'
+\Par\Core\Helper\FormattingHelper::typeOf(new \stdClass()); // 'instance of stdClass'
 ```
 
 InstanceHelper::isAnyOf
 -----------------------
 ```php
 $instance = new \stdClass();
-\Par\Core\Helper\StringHelper::isAnyOf($instance, [new stdClass(), $instance]); // true (strict comparison)
+\Par\Core\Helper\InstanceHelper::isAnyOf($instance, [new stdClass(), $instance]); // true (strict comparison)
 
 // Support for ObjectInterface
-$instance = new \App\Model\Item('value');
-\Par\Core\Helper\StringHelper::isAnyOf($instance, [new \App\Model\Item('value')]); // true (via ObjectInterface::equals)
+$instance = new Item('value');
+\Par\Core\Helper\InstanceHelper::isAnyOf($instance, [new Item('value')]); // true (via ObjectInterface::equals)
 
 // Forgiving with input
-\Par\Core\Helper\StringHelper::isAnyOf(false, [false]); // false (only compares objects with objects)
+\Par\Core\Helper\InstanceHelper::isAnyOf(null, [false]); // false (only compares objects with objects)
+```
+
+InstanceHelper::isSameType
+--------------------------
+
+```php
+$other = new Item('custom value');
+
+$expected = new Item('custom value');
+\PAR\Core\Helper\InstanceHelper::isSameType($expected, $other); // true
+
+$expected = new SubItem('custom value');
+\PAR\Core\Helper\InstanceHelper::isSameType($expected, $other); // false
 ```

@@ -2,19 +2,22 @@
 
 namespace PAR\Core;
 
-use PAR\Core\Exception\ClassCastException;
+use PAR\Core\Exception\ClassMismatchException;
 
 final class Comparator
 {
-    private function __construct()
+    /**
+     * @return Comparator
+     */
+    public static function callback(): self
     {
-        // Make sure it cannot be instantiated
+        return new self();
     }
 
     /**
      * Sort array by ComparableInterface::compareTo
      *
-     * @param array $array The array to sort
+     * @param array<ComparableInterface> $array The array to sort
      *
      * @return array
      */
@@ -23,8 +26,9 @@ final class Comparator
         $sorted = array_map(
             static function ($item, $key) {
                 if (!$item instanceof ComparableInterface) {
-                    throw ClassCastException::unexpectedTypeInArray((string)$key, $item, ComparableInterface::class);
+                    throw ClassMismatchException::expectedTypeInArray(ComparableInterface::class, (string)$key, $item);
                 }
+
                 return $item;
             },
             $array,
@@ -35,12 +39,9 @@ final class Comparator
         return $sorted;
     }
 
-    /**
-     * @return Comparator
-     */
-    public static function callback(): self
+    private function __construct()
     {
-        return new self();
+        // Make sure it cannot be instantiated
     }
 
     /**

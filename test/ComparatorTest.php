@@ -3,7 +3,7 @@
 namespace PARTest\Core;
 
 use PAR\Core\Comparator;
-use PAR\Core\Exception\ClassCastException;
+use PAR\Core\Exception\ClassMismatchException;
 use PARTest\Core\Fixtures\Integer;
 use PHPUnit\Framework\TestCase;
 
@@ -46,7 +46,7 @@ class ComparatorTest extends TestCase
             null,
         ];
 
-        $this->expectException(ClassCastException::class);
+        $this->expectException(ClassMismatchException::class);
 
         Comparator::sortArray($list);
     }

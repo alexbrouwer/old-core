@@ -3,6 +3,8 @@
 namespace PARTest\Core\Fixtures;
 
 use PAR\Core\ComparableInterface;
+use PAR\Core\Exception\ClassCastException;
+use PAR\Core\Exception\ClassMismatchException;
 use PAR\Core\Helper\InstanceHelper;
 use PAR\Core\ObjectInterface;
 
@@ -28,10 +30,11 @@ class Integer implements ComparableInterface, ObjectInterface
      */
     public function compareTo(ComparableInterface $other): int
     {
-        InstanceHelper::assertIsOfClass($other, self::class);
+        if ($other instanceof self && get_class($other) === static::class) {
+            return $this->value <=> $other->value;
+        }
 
-        /* @var self $other */
-        return $this->value <=> $other->value;
+        throw ClassMismatchException::expectedInstance($this, $other);
     }
 
     /**
@@ -39,7 +42,7 @@ class Integer implements ComparableInterface, ObjectInterface
      */
     public function equals($other): bool
     {
-        return InstanceHelper::isOfClass($other, self::class) && $this->value === $other->value;
+        return InstanceHelper::isSameType($this, $other) && $this->value === $other->value;
     }
 
     /**

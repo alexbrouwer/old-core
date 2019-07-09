@@ -2,9 +2,7 @@
 
 namespace PAR\Core\Helper;
 
-use PAR\Core\ObjectInterface;
-
-final class StringHelper extends HelperAbstract
+final class FormattingHelper extends HelperAbstract
 {
     /**
      * Determines the type of data. Combines gettype and get_class.
@@ -19,10 +17,6 @@ final class StringHelper extends HelperAbstract
 
         if ($type === 'object') {
             $type = sprintf('instance of %s', get_class($data));
-
-            if ($data instanceof ObjectInterface) {
-                $type .= '@' . $data->toString();
-            }
         }
 
         return $type;
