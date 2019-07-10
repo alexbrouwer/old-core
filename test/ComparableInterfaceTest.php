@@ -46,7 +46,6 @@ class ComparableInterfaceTest extends TestCase
         };
 
         $this->expectException(ClassMismatchException::class);
-        $this->expectExceptionMessage('Expected an object of type PARTest\Core\Fixtures\Integer, got instance of ' . get_class($other));
 
         $value->compareTo($other);
     }
