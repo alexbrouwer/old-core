@@ -62,7 +62,8 @@ final class FormattingHelper extends HelperAbstract
             array_map(
                 static function ($value) use ($depth) {
                     return self::typeOf($value, ++$depth);
-                }, $values
+                },
+                $values
             )
         );
 
@@ -97,7 +98,7 @@ final class FormattingHelper extends HelperAbstract
         if (is_resource($value)) {
             return sprintf(
                 'resource(%d) of type (%s)',
-                $value,
+                (int)$value,
                 get_resource_type($value)
             );
         }
@@ -110,7 +111,8 @@ final class FormattingHelper extends HelperAbstract
 
             return "'" .
                 str_replace(
-                    '<lf>', "\n",
+                    '<lf>',
+                    "\n",
                     str_replace(
                         ["\r\n", "\n\r", "\r", "\n"],
                         ['\r\n<lf>', '\n\r<lf>', '\r<lf>', '\n<lf>'],

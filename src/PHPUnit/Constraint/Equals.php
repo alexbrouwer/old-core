@@ -44,5 +44,4 @@ class Equals extends Constraint
 
         return sprintf('%s %s', $otherExport, $this->toString());
     }
-
 }
