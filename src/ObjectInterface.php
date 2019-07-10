@@ -20,7 +20,7 @@ interface ObjectInterface
      *
      * A simple implementation would be:
      * ```
-     * return \Par\Core\Helper\InstanceHelper::toString($this);
+     * return \Par\Core\Helper\InstanceHelper::toString($this, $this->value);
      * ```
      *
      * @return string
