@@ -129,6 +129,5 @@ InstanceHelper::toString
 
 ```php
 $instance = new Item('value');
-\PAR\Core\Helper\InstanceHelper::toString($instance); // Item@000000004080cda50000000021fdb7ab
-\PAR\Core\Helper\InstanceHelper::toString($instance, 'value'); // Item("value")
+\PAR\Core\Helper\InstanceHelper::toString($instance); // 000000004080cda50000000021fdb7ab
 ```

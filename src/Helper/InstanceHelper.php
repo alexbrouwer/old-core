@@ -59,18 +59,12 @@ final class InstanceHelper extends HelperAbstract
     /**
      * Returns a string representation of provided object.
      *
-     * @param object      $instance              The instance to cast to string.
-     * @param string|null $representationalValue A text that represents the value of the instance
+     * @param object $instance The instance to cast to string.
      *
      * @return string
      */
-    public static function toString(object $instance, string $representationalValue = null): string
+    public static function toString(object $instance): string
     {
-        $class = get_class($instance);
-        if (null === $representationalValue) {
-            return sprintf('%s@%s', $class, spl_object_hash($instance));
-        }
-
-        return sprintf('%s("%s")', $class, $representationalValue);
+        return spl_object_hash($instance);
     }
 }

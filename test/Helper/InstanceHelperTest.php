@@ -29,6 +29,6 @@ class InstanceHelperTest extends TestCase
 
     public function testCanTransformInstanceToString(): void
     {
-        $this->assertSame(sprintf('%s@%s', get_class($this), spl_object_hash($this)), InstanceHelper::toString($this));
+        $this->assertSame(sprintf('%s', spl_object_hash($this)), InstanceHelper::toString($this));
     }
 }
