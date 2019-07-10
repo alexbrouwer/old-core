@@ -10,17 +10,18 @@ final class FormattingHelper extends HelperAbstract
      * Determines the type of data. Combines gettype and get_class.
      *
      * @param mixed $data
+     * @param int   $depth To prevent massive deep nested array after 3 levels we stop
      *
      * @return string
      */
-    public static function typeOf($data): string
+    public static function typeOf($data, int $depth = 0): string
     {
         if ($data === null) {
             return 'null';
         }
 
         if (is_array($data)) {
-            if (empty($data)) {
+            if (empty($data) || $depth >= 2) {
                 return 'array';
             }
 
@@ -28,10 +29,10 @@ final class FormattingHelper extends HelperAbstract
 
             if (array_values($data) !== $data) {
                 // determine type of key
-                $types[] = self::determineArrayTypes(array_keys($data));
+                $types[] = self::determineArrayTypes(array_keys($data), $depth);
             }
 
-            $types[] = self::determineArrayTypes($data);
+            $types[] = self::determineArrayTypes($data, $depth);
 
             return sprintf('array<%s>', implode(',', $types));
         }
@@ -55,15 +56,17 @@ final class FormattingHelper extends HelperAbstract
         return gettype($data);
     }
 
-    private static function determineArrayTypes(array $values): string
+    private static function determineArrayTypes(array $values, int $depth = 0): string
     {
         $valuesTypes = array_unique(
             array_map(
-                static function ($value) {
-                    return self::typeOf($value);
+                static function ($value) use ($depth) {
+                    return self::typeOf($value, ++$depth);
                 }, $values
             )
         );
+
+        sort($valuesTypes);
 
         return implode('|', $valuesTypes);
     }

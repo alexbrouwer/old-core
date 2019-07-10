@@ -31,6 +31,16 @@ class FormattingHelperTest extends TestCase
             [[1, 2], 'array<integer>'],
             [[1, ''], 'array<integer|string>'],
             [['a' => 1, 'b' => 2], 'array<string,integer>'],
+            [
+                [
+                    [
+                        'text',
+                        [
+                            [],
+                        ],
+                    ],
+                ],
+                'array<array<array|string>>'],
             [$this, get_class($this)],
             [
                 new class() extends TestCase
