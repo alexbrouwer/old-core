@@ -2,6 +2,8 @@
 
 namespace PAR\Core\Helper;
 
+use PAR\Core\ObjectInterface;
+
 final class FormattingHelper extends HelperAbstract
 {
     /**
@@ -13,12 +15,122 @@ final class FormattingHelper extends HelperAbstract
      */
     public static function typeOf($data): string
     {
-        $type = gettype($data);
-
-        if ($type === 'object') {
-            $type = sprintf('instance of %s', get_class($data));
+        if ($data === null) {
+            return 'null';
         }
 
-        return $type;
+        if (is_array($data)) {
+            if (empty($data)) {
+                return 'array';
+            }
+
+            $types = [];
+
+            if (array_values($data) !== $data) {
+                // determine type of key
+                $types[] = self::determineArrayTypes(array_keys($data));
+            }
+
+            $types[] = self::determineArrayTypes($data);
+
+            return sprintf('array<%s>', implode(',', $types));
+        }
+
+        if (is_object($data)) {
+            $class = get_class($data);
+            if (preg_match('/^class@anonymous/', $class)) {
+                $reflectionClass = ClassHelper::getReflectionClass($class);
+                $parent = $reflectionClass->getParentClass();
+                if ($parent) {
+                    $parent = '::' . $parent->getName();
+                } elseif (count($reflectionClass->getInterfaceNames())) {
+                    $parent = '[' . implode(',', $reflectionClass->getInterfaceNames()) . ']';
+                }
+                $class = sprintf('anonymous%s', $parent);
+            }
+
+            return $class;
+        }
+
+        return gettype($data);
+    }
+
+    private static function determineArrayTypes(array $values): string
+    {
+        $valuesTypes = array_unique(
+            array_map(
+                static function ($value) {
+                    return self::typeOf($value);
+                }, $values
+            )
+        );
+
+        return implode('|', $valuesTypes);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public static function valueOf($value): string
+    {
+        if ($value === null) {
+            return 'null';
+        }
+
+        if ($value === true) {
+            return 'true';
+        }
+
+        if ($value === false) {
+            return 'false';
+        }
+
+        if (is_float($value) && (float)((int)$value) === $value) {
+            return "$value.0";
+        }
+
+        if (is_resource($value)) {
+            return sprintf(
+                'resource(%d) of type (%s)',
+                $value,
+                get_resource_type($value)
+            );
+        }
+
+        if (is_string($value)) {
+            // Match for most non printable chars somewhat taking multibyte chars into account
+            if (preg_match('/[^\x09-\x0d\x1b\x20-\xff]/', $value)) {
+                return 'Binary String: 0x' . bin2hex($value);
+            }
+
+            return "'" .
+                str_replace(
+                    '<lf>', "\n",
+                    str_replace(
+                        ["\r\n", "\n\r", "\r", "\n"],
+                        ['\r\n<lf>', '\n\r<lf>', '\r<lf>', '\n<lf>'],
+                        $value
+                    )
+                ) .
+                "'";
+        }
+
+        if (is_array($value)) {
+            return self::typeOf($value) . '(' . count($value) . ')';
+        }
+
+        if (is_object($value)) {
+            $class = self::typeOf($value);
+
+            if ($value instanceof ObjectInterface) {
+                return sprintf('%s("%s")', $class, $value->toString());
+            }
+
+            return sprintf('%s@%s', $class, InstanceHelper::toString($value));
+        }
+
+        return var_export($value, true);
     }
 }

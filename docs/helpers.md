@@ -101,6 +101,18 @@ FormattingHelper::typeOf
 \Par\Core\Helper\FormattingHelper::typeOf(new Item('value')); // 'instance of Item'
 ```
 
+FormattingHelper::valueOf
+-------------------------
+
+```php
+$instance = new Item('value');
+\PAR\Core\Helper\FormattingHelper::valueOf('text'); // "text"
+\PAR\Core\Helper\FormattingHelper::valueOf(12); // 12
+\PAR\Core\Helper\FormattingHelper::valueOf($instance); // Item("value")
+\PAR\Core\Helper\FormattingHelper::valueOf(new stdClass()); // stdClass@@000000004080cda50000000021fdb7ab
+\PAR\Core\Helper\FormattingHelper::valueOf(new class('some value') extends Item{}); // anonymous::Item("some value")
+```
+
 InstanceHelper::isAnyOf
 -----------------------
 ```php
