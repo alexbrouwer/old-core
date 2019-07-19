@@ -4,24 +4,12 @@ namespace PARTest\Core\Helper;
 
 use PAR\Core\ComparableInterface;
 use PAR\Core\Helper\FormattingHelper;
-use PAR\Core\Helper\InstanceHelper;
 use PAR\Core\ObjectInterface;
 use PARTest\Core\Fixtures\Integer;
 use PHPUnit\Framework\TestCase;
 
 class FormattingHelperTest extends TestCase
 {
-    /**
-     * @dataProvider provideTypeOfArguments
-     *
-     * @param mixed  $data
-     * @param string $expected
-     */
-    public function testTypeOf($data, string $expected): void
-    {
-        $this->assertSame($expected, FormattingHelper::typeOf($data));
-    }
-
     public function provideTypeOfArguments(): array
     {
         return [
@@ -72,17 +60,6 @@ class FormattingHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideValueOfArguments
-     *
-     * @param mixed  $data
-     * @param string $expected
-     */
-    public function testValueOf($data, string $expected): void
-    {
-        $this->assertSame($expected, FormattingHelper::valueOf($data));
-    }
-
     public function provideValueOfArguments(): array
     {
         $anonymousExtended = new class() extends TestCase
@@ -107,10 +84,32 @@ class FormattingHelperTest extends TestCase
             [[1, 2], 'array<integer>(2)'],
             [[1, ''], 'array<integer|string>(2)'],
             [['a' => 1, 'b' => 2], 'array<string,integer>(2)'],
-            [$this, get_class($this) . '@' . InstanceHelper::toString($this)],
+            [$this, get_class($this) . '@' . spl_object_hash($this)],
             [Integer::fromNative(3), 'PARTest\Core\Fixtures\Integer("3")'],
-            [$anonymousExtended, 'anonymous::PHPUnit\Framework\TestCase@' . InstanceHelper::toString($anonymousExtended)],
-            [$anonymousImplementing, 'anonymous[PAR\Core\ComparableInterface]@' . InstanceHelper::toString($anonymousImplementing)],
+            [$anonymousExtended, 'anonymous::PHPUnit\Framework\TestCase@' . spl_object_hash($anonymousExtended)],
+            [$anonymousImplementing, 'anonymous[PAR\Core\ComparableInterface]@' . spl_object_hash($anonymousImplementing)],
         ];
+    }
+
+    /**
+     * @dataProvider provideTypeOfArguments
+     *
+     * @param mixed  $data
+     * @param string $expected
+     */
+    public function testTypeOf($data, string $expected): void
+    {
+        $this->assertSame($expected, FormattingHelper::typeOf($data));
+    }
+
+    /**
+     * @dataProvider provideValueOfArguments
+     *
+     * @param mixed  $data
+     * @param string $expected
+     */
+    public function testValueOf($data, string $expected): void
+    {
+        $this->assertSame($expected, FormattingHelper::valueOf($data));
     }
 }
