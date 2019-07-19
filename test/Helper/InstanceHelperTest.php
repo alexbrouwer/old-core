@@ -12,10 +12,11 @@ class InstanceHelperTest extends TestCase
     public function testCanDetermineIfAnObjectExistsInListByStringComparison(): void
     {
         $instance = new stdClass();
-        $list = [new stdClass(), $instance];
+        $list = [new stdClass(), $instance, null];
 
         $this->assertTrue(InstanceHelper::isAnyOf($instance, $list));
         $this->assertFalse(InstanceHelper::isAnyOf(new stdClass(), $list));
+        $this->assertFalse(InstanceHelper::isAnyOf(null, $list));
     }
 
     public function testCanDetermineIfAnObjectExistsInListByObjectInterfaceEquals(): void
