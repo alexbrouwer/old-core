@@ -5,7 +5,7 @@ namespace PAR\Core\PHPUnit\Constraint;
 use PAR\Core\ObjectInterface;
 use PHPUnit\Framework\Constraint\Constraint;
 
-class Equals extends Constraint
+class ValueEquality extends Constraint
 {
     /** @var ObjectInterface */
     private $object;
