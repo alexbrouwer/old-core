@@ -2,8 +2,6 @@
 
 namespace PAR\Core\Helper;
 
-use PAR\Core\ObjectInterface;
-
 final class FormattingHelper extends HelperAbstract
 {
     /**
@@ -54,22 +52,6 @@ final class FormattingHelper extends HelperAbstract
         }
 
         return gettype($data);
-    }
-
-    private static function determineArrayTypes(array $values, int $depth = 0): string
-    {
-        $valuesTypes = array_unique(
-            array_map(
-                static function ($value) use ($depth) {
-                    return self::typeOf($value, ++$depth);
-                },
-                $values
-            )
-        );
-
-        sort($valuesTypes);
-
-        return implode('|', $valuesTypes);
     }
 
     /**
@@ -129,13 +111,29 @@ final class FormattingHelper extends HelperAbstract
         if (is_object($value)) {
             $class = self::typeOf($value);
 
-            if ($value instanceof ObjectInterface) {
-                return sprintf('%s("%s")', $class, $value->toString());
+            if (method_exists($value, '__toString')) {
+                return sprintf('%s("%s")', $class, $value);
             }
 
-            return sprintf('%s@%s', $class, InstanceHelper::toString($value));
+            return sprintf('%s@%s', $class, spl_object_hash($value));
         }
 
         return var_export($value, true);
+    }
+
+    private static function determineArrayTypes(array $values, int $depth = 0): string
+    {
+        $valuesTypes = array_unique(
+            array_map(
+                static function ($value) use ($depth) {
+                    return self::typeOf($value, ++$depth);
+                },
+                $values
+            )
+        );
+
+        sort($valuesTypes);
+
+        return implode('|', $valuesTypes);
     }
 }
