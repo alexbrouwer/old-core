@@ -3,13 +3,15 @@
 namespace PARTest\Core\Fixtures;
 
 use PAR\Core\ComparableInterface;
-use PAR\Core\Exception\ClassCastException;
 use PAR\Core\Exception\ClassMismatchException;
 use PAR\Core\Helper\InstanceHelper;
+use PAR\Core\ObjectCastToString;
 use PAR\Core\ObjectInterface;
 
 class Integer implements ComparableInterface, ObjectInterface
 {
+    use ObjectCastToString;
+
     /**
      * @var int
      */

@@ -4,6 +4,7 @@ namespace PARTest\Core\Helper;
 
 use PAR\Core\ComparableInterface;
 use PAR\Core\Helper\FormattingHelper;
+use PAR\Core\ObjectCastToString;
 use PAR\Core\ObjectInterface;
 use PARTest\Core\Fixtures\Integer;
 use PHPUnit\Framework\TestCase;
@@ -39,6 +40,8 @@ class FormattingHelperTest extends TestCase
             [
                 new class() implements ObjectInterface, ComparableInterface
                 {
+                    use ObjectCastToString;
+
                     public function compareTo(ComparableInterface $other): int
                     {
                         // stub

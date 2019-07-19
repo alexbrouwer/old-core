@@ -135,11 +135,3 @@ $expected = new Item('value');
 \PAR\Core\Helper\InstanceHelper::isSameType($expected, new Item('value')); // true
 \PAR\Core\Helper\InstanceHelper::isSameType($expected, new stdClass()); // false
 ```
-
-InstanceHelper::toString
-------------------------
-
-```php
-$instance = new Item('value');
-\PAR\Core\Helper\InstanceHelper::toString($instance); // 000000004080cda50000000021fdb7ab
-```

@@ -62,6 +62,7 @@ final class InstanceHelper extends HelperAbstract
      * @param object $instance The instance to cast to string.
      *
      * @return string
+     * @deprecated use spl_object_hash($obj)
      */
     public static function toString(object $instance): string
     {

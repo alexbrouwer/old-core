@@ -10,9 +10,12 @@ When using the following implementation:
 ```php
 
 use PAR\Core\ObjectInterface;
+use PAR\Core\ObjectCastToString;
 
 class Item implements ObjectInterface 
 {
+    use ObjectCastToString;
+    
     /**
      * @var int
      */
@@ -27,14 +30,7 @@ class Item implements ObjectInterface
     {
         $this->value = $value;
     }
-    
-    /**
-     * Determines if this object equals provided value.
-     *
-     * @param mixed $other The other value to compare with.
-     *
-     * @return bool
-     */
+        
     public function equals($other) : bool
     {
         if ($other instanceof self && get_class($other) === static::class) {
@@ -47,7 +43,6 @@ class Item implements ObjectInterface
     public function toString() : string
     {
         return (string) $this->value;
-    }   
-    
+    }
 }
 ```

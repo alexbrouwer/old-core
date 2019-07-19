@@ -5,6 +5,21 @@ namespace PAR\Core;
 interface ObjectInterface
 {
     /**
+     * Returns a string representation of the object.
+     *
+     * Should always implement:
+     * ```
+     * return $this->toString();
+     * ```
+     *
+     * @see ObjectInterface::toString()
+     * @see ObjectCastToString
+     *
+     * @return string
+     */
+    public function __toString(): string;
+
+    /**
      * Determines if this object equals provided value.
      *
      * @param mixed $other The other value to compare with.
@@ -20,7 +35,7 @@ interface ObjectInterface
      *
      * A simple implementation would be:
      * ```
-     * return \Par\Core\Helper\InstanceHelper::toString($this);
+     * return spl_object_hash($this);
      * ```
      *
      * @return string

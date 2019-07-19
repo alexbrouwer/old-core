@@ -112,7 +112,7 @@ final class FormattingHelper extends HelperAbstract
             $class = self::typeOf($value);
 
             if (method_exists($value, '__toString')) {
-                return sprintf('%s("%s")', $class, $value);
+                return sprintf('%s("%s")', $class, (string)$value);
             }
 
             return sprintf('%s@%s', $class, spl_object_hash($value));
