@@ -1,4 +1,4 @@
-sudo: false
+os: linux
 
 language: php
 
@@ -11,7 +11,7 @@ env:
     - COMPOSER_ARGS="--no-interaction"
     - COVERAGE_DEPS="php-coveralls/php-coveralls"
 
-matrix:
+jobs:
   include:
     - php: '7.2'
       env:
