@@ -2,7 +2,8 @@ PHP Addition Repository - Core
 ==============================
 
 [![Build Status](https://travis-ci.org/php-addition-repository/core.svg?branch=master)](https://travis-ci.org/php-addition-repository/core)
-[![Coverage Status](https://coveralls.io/repos/github/php-addition-repository/core/badge.svg?branch=master)](https://coveralls.io/github/php-addition-repository/core?branch=master)
+
+Repository containing interfaces enforcing basic implementations of general object functionality.
 
 Install
 -------
@@ -14,6 +15,8 @@ composer require par/core
 Usage
 -----
 
-- [ObjectInterface](docs/ObjectInterface.md)
-- [ComparableInterface](docs/ComparableInterface.md)
-- [Helpers](docs/helpers.md)
+### PAR\Core\ObjectInterface
+
+Implement this interface on all classes that represents a domain unit.
+By doing so, determining equality is a breeze via `$instance->equals( $other );`.
+This interface also makes it easier to use the object in any external context via `$instance->toString();`.
