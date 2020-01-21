@@ -2,25 +2,27 @@
 
 namespace PAR\Core;
 
+/**
+ * Interface to make object implementations, specifically those in a domain, more predictable.
+ *
+ * Enforces equality testing via `$instance->equals( $anyValue );` and always getting a boolean answer.
+ * Also casting to string via `$instance->toString();` giving the callee a textual representation of the
+ * instance. Especially useful when passing to a unit for storage, usage in error messages or in debugging setups.
+ */
 interface ObjectInterface
 {
-    /**
-     * Returns a string representation of the object.
-     *
-     * Should always implement:
-     * ```
-     * return $this->toString();
-     * ```
-     *
-     * @see ObjectInterface::toString()
-     * @see ObjectCastToString
-     *
-     * @return string
-     */
-    public function __toString(): string;
 
     /**
-     * Determines if this object equals provided value.
+     * Determines if this object equals the provided other value.
+     *
+     * A common implementation would be:
+     * ```
+     * if ( $other instanceof self && get_class($other) === static::class) {
+     *      return $this->value === $other->value;
+     * }
+     *
+     * return false;
+     * ```
      *
      * @param mixed $other The other value to compare with.
      *
