@@ -1,4 +1,7 @@
-FROM php:7.3-cli-alpine
+ARG TARGET_PHP_VERSION=7.2
+FROM php:${TARGET_PHP_VERSION}-cli-alpine
+
+ARG SERVICE_DIR="./workspace"
 
 ###########################################################################
 # non-root user:
@@ -29,10 +32,8 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN install-php-extensions xdebug zip
 
-# configure php extensions
-RUN echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-	&& echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-	&& echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+# php config
+COPY ${SERVICE_DIR}/config/php/conf.d/*  /usr/local/etc/php/conf.d/
 
 ###########################################################################
 # Composer
@@ -44,6 +45,10 @@ RUN apk update \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /tmp/*
 
+###########################################################################
+# Working directory
+###########################################################################
+
 # Make sure app directory has correct ownership
 ARG APP_CODE_PATH="/app"
 RUN mkdir ${APP_CODE_PATH} \
@@ -52,6 +57,10 @@ RUN mkdir ${APP_CODE_PATH} \
 
 WORKDIR ${APP_CODE_PATH}
 
+###########################################################################
+# Project
+###########################################################################
+
 # execute below as non-root user
 USER ${APP_USER}
 
@@ -59,4 +68,4 @@ USER ${APP_USER}
 ENV PATH="~/.composer/vendor/bin:./vendor/bin:${PATH}"
 
 # speedup composer installs
-RUN composer global require hirak/prestissimo
+RUN composer global require --no-suggest --no-interaction hirak/prestissimo
