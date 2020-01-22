@@ -10,6 +10,8 @@ namespace PAR\Core;
  * Enforces equality testing via `$instance->equals( $anyValue );` and always getting a boolean answer.
  * Also casting to string via `$instance->toString();` giving the callee a textual representation of the
  * instance. Especially useful when passing to a unit for storage, usage in error messages or in debugging setups.
+ *
+ * @deprecated Use \Par\Core\Hashable instead
  */
 interface ObjectInterface
 {
