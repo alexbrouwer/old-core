@@ -6,6 +6,7 @@ networks:
 
 services:
   workspace:
+    image: ${COMPOSE_PROJECT_NAME}/workspace
     build:
       context: .
       dockerfile: ./workspace/Dockerfile
