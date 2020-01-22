@@ -5,8 +5,7 @@ DOCKER_COMPOSE_FILE=./docker-compose.yml
 DOCKER_COMPOSE=docker-compose -f $(DOCKER_COMPOSE_FILE) --project-directory $(DOCKER_COMPOSE_DIR)
 
 ##@ [Development] development tools
-workspace: docker-build
-	$(MAKE) docker-up CONTAINER=workspace
+workspace:
 	$(MAKE) docker-login CONTAINER=workspace
 
 ##@ [Docker] Build / Infrastructure
