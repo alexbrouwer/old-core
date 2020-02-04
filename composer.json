@@ -28,7 +28,8 @@
         }
     },
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "php-ds/php-ds": "^1.2"
     },
     "require-dev": {
         "par/coding-standard": "^1.1",
