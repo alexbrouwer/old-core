@@ -1,7 +1,7 @@
 ARG TARGET_PHP_VERSION=7.2
 FROM php:${TARGET_PHP_VERSION}-cli-alpine
 
-ARG SERVICE_DIR="./workspace"
+ARG SERVICE_DIR="./.docker/workspace"
 
 ###########################################################################
 # non-root user:
@@ -32,6 +32,13 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN install-php-extensions xdebug zip
 
+RUN apk update && apk add --no-cache make g++ autoconf \
+    && docker-php-source extract \
+    && pecl install ds \
+    && docker-php-ext-enable ds \
+    && docker-php-source delete \
+    && apk del make g++ autoconf && rm -rf /tmp/*
+
 # php config
 COPY ${SERVICE_DIR}/config/php/conf.d/*  /usr/local/etc/php/conf.d/
 
@@ -45,15 +52,28 @@ RUN apk update \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /tmp/*
 
+USER ${APP_USER}
+
+# speedup composer installs
+RUN composer global require --no-suggest --no-interaction hirak/prestissimo
+
+# make sure PATH contains all composer scripts
+ENV PATH="~/.composer/vendor/bin:${PATH}"
+
 ###########################################################################
 # Working directory
 ###########################################################################
+
+USER root
 
 # Make sure app directory has correct ownership
 ARG APP_CODE_PATH="/app"
 RUN mkdir ${APP_CODE_PATH} \
 	&& chown ${APP_USER}:${APP_GROUP} ${APP_CODE_PATH} \
-	&& chmod 775 ${APP_CODE_PATH}
+	&& chmod 775 ${APP_CODE_PATH} \
+    && mkdir /opt/phpstorm-coverage \
+    && chown ${APP_USER}:${APP_GROUP} /opt/phpstorm-coverage \
+    && chmod 775 /opt/phpstorm-coverage
 
 WORKDIR ${APP_CODE_PATH}
 
@@ -65,7 +85,5 @@ WORKDIR ${APP_CODE_PATH}
 USER ${APP_USER}
 
 # make sure PATH contains all composer scripts
-ENV PATH="~/.composer/vendor/bin:./vendor/bin:${PATH}"
+ENV PATH="./vendor/bin:${PATH}"
 
-# speedup composer installs
-RUN composer global require --no-suggest --no-interaction hirak/prestissimo

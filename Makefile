@@ -1,12 +1,14 @@
 PROJECT_NAME=par/enum
 
-DOCKER_COMPOSE_DIR=./.docker
 DOCKER_COMPOSE_FILE=./docker-compose.yml
-DOCKER_COMPOSE=docker-compose -f $(DOCKER_COMPOSE_FILE) --project-directory $(DOCKER_COMPOSE_DIR)
+DOCKER_COMPOSE=docker-compose -f $(DOCKER_COMPOSE_FILE)
 
 ##@ [Development] development tools
 workspace:
 	$(MAKE) docker-login CONTAINER=workspace
+
+check:
+	$(MAKE) docker-exec CONTAINER=workspace CMD="composer check"
 
 ##@ [Docker] Build / Infrastructure
 .docker/.env:
@@ -41,3 +43,5 @@ docker-down: docker-init ## Stop all docker containers. To only stop one contain
 docker-login: docker-init ## SSH into a container use CONTAINER=<service>
 	$(DOCKER_COMPOSE) exec $(CONTAINER) sh
 
+docker-exec: docker-init ## SSH into a container use CONTAINER=<service>
+	$(DOCKER_COMPOSE) exec $(CONTAINER) sh
