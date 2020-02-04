@@ -7,19 +7,19 @@ namespace PARTest\Core\Fixtures;
 use PAR\Core\Hashable;
 use PAR\Core\Traits;
 
-class HashableObject implements Hashable
+class GenericHashable implements Hashable
 {
-    use Traits\Equals;
+    use Traits\GenericHashable;
 
     /**
-     * @var string
+     * @var int
      */
     private $hash;
 
     /**
-     * @param string $hash
+     * @param int $hash
      */
-    public function __construct(string $hash)
+    public function __construct(int $hash)
     {
         $this->hash = $hash;
     }
@@ -27,9 +27,8 @@ class HashableObject implements Hashable
     /**
      * @inheritDoc
      */
-    public function hash(): string
+    public function hash(): int
     {
         return $this->hash;
     }
-
 }
