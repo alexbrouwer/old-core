@@ -125,13 +125,13 @@ final class Values
      * - `'value'` for a native __float__ or __double__.
      * - `'true'` or `'false'` for a native __boolean__.
      * - `'value'` for a native __string__.
-     * - `'[el1, el2, elN]'` for a native __array__ list or `'{key1=el1, key2=el2, keyN=elN}'` for native a __array__ map. Where __elN__ and __keyN__ are textual representations of its value, except
-     *   when its value is an array then `'[...]'` is used.
+     * - `'[el1, el2, elN]'` for a native __array__ list or `'{key1=el1, key2=el2, keyN=elN}'` for native a __array__ map. Where __elN__ and __keyN__ are textual representations
+     *   of its value, except when its value is an array then `'[...]'` is used.
      * - `'className@hash'` for an __object__. `get_class($value)` is used for all objects except for anonymous classes, in which case "anonymous" is used. The hash is determined
      *   via `static::hash($value)`.
      * - `'closure@hash'` for a __closure__. The hash is determined via `static::hash($value)`. Be aware that a closure in PHP is actually an object (instance of `\Closure`).
-     * - `'resource(type)@hash'` for a __resource__. The type is determined via `get_resource_type` unless the resource is closed, in which case 'closed' is used since the type cannot
-     *   be determined in PHP. The hash is determined via `static::hash($value)`.
+     * - `'resource(type)@hash'` for a __resource__. The type is determined via `get_resource_type` unless the resource is closed, in which case 'closed' is used since the type
+     *   cannot be determined in PHP. The hash is determined via `static::hash($value)`.
      *
      * @param mixed $value The value for which to determine the textual representation
      *
@@ -212,7 +212,7 @@ final class Values
                 return static::handleHashOverflow((int)$value);
             case 'array':
                 return static::arrayToHash($value, $maxDepth);
-            case 'null';
+            case 'null':
             default:
                 return 0;
         }
