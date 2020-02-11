@@ -6,11 +6,12 @@ networks:
 
 services:
   workspace:
-      image: par/core/workspace
+    image: par/core/workspace
     build:
       context: .
       dockerfile: .docker/workspace/Dockerfile
       args:
+          - TARGET_PHP_VERSION=${PHP_VERSION-7.4}
           - TZ=${TIMEZONE-UTC}
     volumes:
         - .:/app
