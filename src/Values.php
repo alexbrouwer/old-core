@@ -48,16 +48,28 @@ final class Values
         return static::valueToHash($value, 10);
     }
 
-    public static function hashSum(int ...$hash): int
+    /**
+     * Sum all provided hashes.
+     *
+     * @param int $hash                    A hash to sum
+     * @param array<int, int> $otherHashes Other hashes to sum
+     *
+     * @return int The sum of the provided hashes
+     */
+    public static function hashSum(int $hash, int ...$otherHashes): int
     {
+        if (empty($otherHashes)) {
+            return $hash;
+        }
+
         return array_reduce(
-            $hash,
+            $otherHashes,
             static function (int $previous, int $hash): int {
                 $safeHash = static::handleHashOverflow($hash);
 
                 return static::handleHashOverflow($previous + $safeHash);
             },
-            0
+            $hash
         );
     }
 
