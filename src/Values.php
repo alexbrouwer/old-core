@@ -78,7 +78,7 @@ final class Values
      *
      * - `'null'` for a __NULL__ value.
      * - `'int'` for a native __integer__.
-     * - `'float'''` for a native __float__ or __double__.
+     * - `'float'` for a native __float__ or __double__.
      * - `'bool'` for a native __boolean__.
      * - `'string'` for a native __string__.
      * - `'array'` for a native __array__.
@@ -251,8 +251,8 @@ final class Values
     /**
      * Transform an array to a hash.
      *
-     * @param array $value  The array to transform
-     * @param int $maxDepth The maximum recursion depth
+     * @param array<mixed> $value The array to transform
+     * @param int $maxDepth       The maximum recursion depth
      *
      * @return int The resulting hash
      */
@@ -326,7 +326,7 @@ final class Values
     /**
      * Transform an array to its textual representation.
      *
-     * @param array $value The array to transform
+     * @param array<mixed> $value The array to transform
      *
      * @return string The resulting string
      */
