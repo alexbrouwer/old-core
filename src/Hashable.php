@@ -28,7 +28,7 @@ interface Hashable extends \Ds\Hashable
     public function equals($other): bool;
 
     /**
-     * Produces a integer to be used as the object's hash, which determines
+     * Produces an integer to be used as the object's hash, which determines
      * where it goes in the hash table. While this value does not have to be
      * unique, objects which are equal must have the same hash value.
      *
