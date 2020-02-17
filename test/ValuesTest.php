@@ -37,8 +37,9 @@ class ValuesTest extends TestCase
             'object' => [$obj, spl_object_id($obj)],
             'resource' => [$resource, (int)$resource],
             'resource-closed' => [$closedResource, (int)$closedResource],
-            'array-list' => [[1, 10], 11],
+            'array-list' => [[1, 4], 5],
             'array-map' => [[1 => 'foo', 4 => 'bar'], 198878],
+            'array-max-recursion' => [[1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, []]]]]]]]]]]]], 10],
         ];
     }
 

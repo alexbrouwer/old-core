@@ -8,7 +8,7 @@ use Closure;
 
 final class Values
 {
-    private const MAX_HASH_RECURSION_DEPTH = 10;
+    private const MAX_HASH_DEPTH = 10;
 
     /**
      * Determines if values should be considered equal.
@@ -45,32 +45,7 @@ final class Values
      */
     public static function hash($value): int
     {
-        return static::valueToHash($value, 10);
-    }
-
-    /**
-     * Sum all provided hashes.
-     *
-     * @param int $hash                    A hash to sum
-     * @param array<int, int> $otherHashes Other hashes to sum
-     *
-     * @return int The sum of the provided hashes
-     */
-    public static function hashSum(int $hash, int ...$otherHashes): int
-    {
-        if (empty($otherHashes)) {
-            return $hash;
-        }
-
-        return array_reduce(
-            $otherHashes,
-            static function (int $previous, int $hash): int {
-                $safeHash = static::handleHashOverflow($hash);
-
-                return static::handleHashOverflow($previous + $safeHash);
-            },
-            $hash
-        );
+        return static::valueToHash($value);
     }
 
     /**
@@ -193,7 +168,7 @@ final class Values
      *
      * @return int The resulting hash
      */
-    private static function valueToHash($value, int $maxDepth = self::MAX_HASH_RECURSION_DEPTH): int
+    private static function valueToHash($value, int $maxDepth = self::MAX_HASH_DEPTH): int
     {
         if (null === $value) {
             return 0;
@@ -251,33 +226,33 @@ final class Values
     /**
      * Transform an array to a hash.
      *
-     * @param array<mixed> $value The array to transform
-     * @param int $maxDepth       The maximum recursion depth
+     * @param array<mixed> $values The array to transform
+     * @param int $maxDepth        The maximum recursion depth
      *
      * @return int The resulting hash
      */
-    private static function arrayToHash(array $value, int $maxDepth): int
+    private static function arrayToHash(array $values, int $maxDepth): int
     {
-        if ($maxDepth === 0) {
+        if ($maxDepth === 0 || empty($values)) {
             return 0;
         }
 
-        $valueHash = array_reduce(
-            $value,
-            static function (int $previous, $value) use ($maxDepth): int {
-                $hash = static::valueToHash($value, --$maxDepth);
+        $hashes = [];
+        foreach ($values as $value) {
+            $hashes[] = static::valueToHash($value, $maxDepth - 1);
+        }
 
-                return static::hashSum($previous, $hash);
+        if (array_values($values) !== $values) {
+            $hashes[] = static::arrayToHash(array_keys($values), 1);
+        }
+
+        return array_reduce(
+            $hashes,
+            static function (int $previous, int $hash): int {
+                return static::handleHashOverflow($previous + $hash);
             },
             0
         );
-
-        $keyHash = 0;
-        if (array_values($value) !== $value) {
-            $keyHash = static::arrayToHash(array_keys($value), 1);
-        }
-
-        return static::hashSum($keyHash, $valueHash);
     }
 
     /**
