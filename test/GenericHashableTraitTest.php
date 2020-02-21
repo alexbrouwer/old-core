@@ -10,7 +10,7 @@ use stdClass;
 
 class GenericHashableTraitTest extends TestCase
 {
-    public function getInstance(int $hash = 1): GenericHashable
+    public function getInstance($hash): GenericHashable
     {
         return new GenericHashable($hash);
     }
@@ -20,7 +20,7 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itIsEqualToSelf(): void
     {
-        $instance = $this->getInstance();
+        $instance = $this->getInstance('hash');
 
         $this->assertTrue($instance->equals($instance));
     }
@@ -30,9 +30,10 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itIsEqualToInstanceWithSameHash(): void
     {
-        $instance = $this->getInstance();
-        $other = $this->getInstance();
+        $instance = $this->getInstance('hash');
+        $other = $this->getInstance('hash');
 
+        $this->assertNotSame($other, $instance);
         $this->assertTrue($instance->equals($other));
     }
 
@@ -41,8 +42,8 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itIsNotEqualToInstanceWithDifferentHash(): void
     {
-        $instance = $this->getInstance();
-        $other = $this->getInstance(2);
+        $instance = $this->getInstance('hash');
+        $other = $this->getInstance('other-hash');
 
         $this->assertFalse($instance->equals($other));
     }
@@ -52,7 +53,7 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itIsNotEqualToInstanceOfDifferentType(): void
     {
-        $instance = $this->getInstance();
+        $instance = $this->getInstance('hash');
         $other = new stdClass();
 
         $this->assertFalse($instance->equals($other));
@@ -63,7 +64,7 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itIsNotEqualToDifferentValueType(): void
     {
-        $instance = $this->getInstance();
+        $instance = $this->getInstance(null);
         $other = null;
 
         $this->assertFalse($instance->equals($other));
@@ -74,7 +75,7 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itIsNotEqualToInstanceOfChildWithSameHash(): void
     {
-        $hash = 1;
+        $hash = 'foo';
         $instance = $this->getInstance($hash);
         $other = new class($hash) extends GenericHashable {
         };
@@ -87,7 +88,7 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itIsNotEqualToInstanceOfParentWithSameHash(): void
     {
-        $hash = 2;
+        $hash = 'hash';
         $instance = new class($hash) extends GenericHashable {
         };
         $other = $this->getInstance($hash);
@@ -100,11 +101,11 @@ class GenericHashableTraitTest extends TestCase
      */
     public function itCanBeTransformedToString(): void
     {
-        $hash = 123;
+        $hash = 'hash';
         $instance = $this->getInstance($hash);
 
         $this->assertSame(
-            sprintf('%s@%s', get_class($instance), dechex($hash)),
+            sprintf('%s@%s', get_class($instance), $hash),
             (string)$instance
         );
     }

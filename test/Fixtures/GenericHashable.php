@@ -12,14 +12,14 @@ class GenericHashable implements Hashable
     use Traits\GenericHashable;
 
     /**
-     * @var int
+     * @var int|string|bool|null|float
      */
     private $hash;
 
     /**
-     * @param int $hash
+     * @param int|string|bool|null|float $hash
      */
-    public function __construct(int $hash)
+    public function __construct($hash)
     {
         $this->hash = $hash;
     }
@@ -27,7 +27,7 @@ class GenericHashable implements Hashable
     /**
      * @inheritDoc
      */
-    public function hash(): int
+    public function hash()
     {
         return $this->hash;
     }

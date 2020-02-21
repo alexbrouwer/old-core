@@ -22,6 +22,6 @@ trait GenericHashable
 
     public function __toString(): string
     {
-        return sprintf('%s@%s', get_class($this), dechex($this->hash()));
+        return sprintf('%s@%s', get_class($this), $this->hash());
     }
 }

@@ -8,8 +8,6 @@ use Closure;
 
 final class Values
 {
-    private const MAX_HASH_DEPTH = 10;
-
     /**
      * Determines if values should be considered equal.
      *
@@ -35,70 +33,25 @@ final class Values
     }
 
     /**
-     * Produces an integer to be used as the value's hash, which determines
+     * Produces a scalar or null value to be used as the value's hash, which determines
      * where it goes in the hash table. While this value does not have to be
      * unique, values which are equal must have the same hash value.
      *
      * @param mixed $value The value to produce a hash for
      *
-     * @return int
+     * @return bool|float|int|string|null
      */
-    public static function hash($value): int
+    public static function hash($value)
     {
-        return static::valueToHash($value);
-    }
-
-    /**
-     * Returns a textual representation for the type of value.
-     *
-     * - `'null'` for a __NULL__ value.
-     * - `'int'` for a native __integer__.
-     * - `'float'` for a native __float__ or __double__.
-     * - `'bool'` for a native __boolean__.
-     * - `'string'` for a native __string__.
-     * - `'array'` for a native __array__.
-     * - `'className'` for an __object__. `get_class($value)` is used for all objects except for anonymous classes, in which case 'anonymous' is used.
-     * - `'closure'` for a __closure__ which is actually an instance of `Closure`.
-     * - `'resource'` for a __resource__.
-     *
-     * @param mixed $value The value for which to determine the type
-     *
-     * @return string The type of value.
-     */
-    public static function typeOf($value): string
-    {
-        if (is_object($value)) {
-            return static::getObjectType($value);
+        if ($value instanceof Hashable) {
+            return $value->hash();
         }
 
-        $nativeType = gettype($value);
-        switch ($nativeType) {
-            case 'boolean':
-                $type = 'bool';
-                break;
-            case 'integer':
-                $type = 'int';
-                break;
-            case 'double':
-                $type = 'float';
-                break;
-            case 'resource':
-            case 'resource (closed)':
-                $type = 'resource';
-                break;
-            case 'NULL':
-                return 'null';
-            case 'array':
-            case 'float':
-            case 'string':
-                $type = $nativeType;
-                break;
-            default:
-                $type = 'unknown';
-                break;
+        if (!is_scalar($value) && null !== $value) {
+            return HashCode::forAny($value);
         }
 
-        return $type;
+        return $value;
     }
 
     /**
@@ -161,118 +114,56 @@ final class Values
     }
 
     /**
-     * Transform any value to a hash, recursion safe.
+     * Returns a textual representation for the type of value.
      *
-     * @param mixed $value  The value to transform to a hash
-     * @param int $maxDepth The maximum recursion level
+     * - `'null'` for a __NULL__ value.
+     * - `'int'` for a native __integer__.
+     * - `'float'` for a native __float__ or __double__.
+     * - `'bool'` for a native __boolean__.
+     * - `'string'` for a native __string__.
+     * - `'array'` for a native __array__.
+     * - `'className'` for an __object__. `get_class($value)` is used for all objects except for anonymous classes, in which case 'anonymous' is used.
+     * - `'closure'` for a __closure__ which is actually an instance of `Closure`.
+     * - `'resource'` for a __resource__.
      *
-     * @return int The resulting hash
+     * @param mixed $value The value for which to determine the type
+     *
+     * @return string The type of value.
      */
-    private static function valueToHash($value, int $maxDepth = self::MAX_HASH_DEPTH): int
+    public static function typeOf($value): string
     {
-        if (null === $value) {
-            return 0;
+        if (is_object($value)) {
+            return static::getObjectType($value);
         }
 
-        $type = gettype($value);
-        switch (strtolower($type)) {
+        $nativeType = gettype($value);
+        switch ($nativeType) {
             case 'boolean':
-                return $value ? 1231 : 1237;
-            case 'string':
-                return static::stringToHash($value);
-            case 'double':
-            case 'float':
-                $packed = pack('g', $value);
-                [, $number] = unpack('V', $packed);
-
-                return static::handleHashOverflow($number);
-            case 'object':
-                if ($value instanceof Hashable) {
-                    return $value->hash();
-                }
-
-                return spl_object_id($value);
+                $type = 'bool';
+                break;
             case 'integer':
-                return static::handleHashOverflow($value);
+                $type = 'int';
+                break;
+            case 'double':
+                $type = 'float';
+                break;
             case 'resource':
             case 'resource (closed)':
-                return static::handleHashOverflow((int)$value);
+                $type = 'resource';
+                break;
+            case 'NULL':
+                return 'null';
             case 'array':
-                return static::arrayToHash($value, $maxDepth);
-            case 'null':
+            case 'float':
+            case 'string':
+                $type = $nativeType;
+                break;
             default:
-                return 0;
-        }
-    }
-
-    /**
-     * Transform a string to a hash.
-     *
-     * @param string $value The string to transform
-     *
-     * @return int The resulting hash
-     */
-    private static function stringToHash(string $value): int
-    {
-        $hash = 0;
-        $length = strlen($value);
-        for ($i = 0; $i < $length; $i++) {
-            $hash = static::handleHashOverflow(31 * $hash + ord($value[$i]));
+                $type = 'unknown';
+                break;
         }
 
-        return $hash;
-    }
-
-    /**
-     * Transform an array to a hash.
-     *
-     * @param array<mixed> $values The array to transform
-     * @param int $maxDepth        The maximum recursion depth
-     *
-     * @return int The resulting hash
-     */
-    private static function arrayToHash(array $values, int $maxDepth): int
-    {
-        if ($maxDepth === 0 || empty($values)) {
-            return 0;
-        }
-
-        $hashes = [];
-        foreach ($values as $value) {
-            $hashes[] = static::valueToHash($value, $maxDepth - 1);
-        }
-
-        if (array_values($values) !== $values) {
-            $hashes[] = static::arrayToHash(array_keys($values), 1);
-        }
-
-        return array_reduce(
-            $hashes,
-            static function (int $previous, int $hash): int {
-                return static::handleHashOverflow($previous + $hash);
-            },
-            0
-        );
-    }
-
-    /**
-     * Handles overflowing of an integer
-     *
-     * @param int $value
-     *
-     * @return int
-     */
-    private static function handleHashOverflow(int $value): int
-    {
-        $bits = 32;
-        $sign_mask = 1 << $bits - 1;
-        $clamp_mask = ($sign_mask << 1) - 1;
-
-        if ($value & $sign_mask) {
-            return ((~$value & $clamp_mask) + 1) * -1;
-        }
-
-        return $value & $clamp_mask;
+        return $type;
     }
 
     /**
