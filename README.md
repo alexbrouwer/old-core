@@ -2,8 +2,9 @@ PHP Addition Repository - Core
 ==============================
 
 [![Build Status](https://travis-ci.org/php-addition-repository/core.svg?branch=master)](https://travis-ci.org/php-addition-repository/core)
+[![Coverage Status](https://coveralls.io/repos/github/php-addition-repository/core/badge.svg?branch=master)](https://coveralls.io/github/php-addition-repository/core?branch=master)
 
-Repository containing interfaces enforcing basic implementations of general object functionality.
+A multitude of data structures to improve on PHP.
 
 Install
 -------
@@ -12,11 +13,22 @@ Install
 composer require par/core
 ```
 
-Usage
------
+This package depends on the pecl [Data Structures](https://github.com/php-ds/ext-ds) package. It will work without, but installing it will improve performance greatly.
 
-### PAR\Core\ObjectInterface
+Test
+----
 
-Implement this interface on all classes that represents a domain unit.
-By doing so, determining equality is a breeze via `$instance->equals( $other );`.
-This interface also makes it easier to use the object in any external context via `$instance->toString();`.
+```bash
+make workspace
+composer test
+```
+
+Credits
+-------
+
+- [Rudi Theunissen](https://github.com/rtheunissen) and [Joe Watkins](https://github.com/krakjoe) for their work on the pecl [Data Structures](https://github.com/php-ds/ext-ds) package which in my opinion should be made available in the PHP core
+
+Licence
+-------
+
+The MIT License (MIT). Please see [LICENSE](LICENCE.md) for more information.
