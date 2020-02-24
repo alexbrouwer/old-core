@@ -6,17 +6,22 @@ PHP Addition Repository - Core
 
 A multitude of data structures to improve on PHP.
 
-See [docs](https://php-addition-repository.github.io/core/) for more information.
-
+I'm working on documentation.
 
 Install
 -------
 
-```
+```bash
 composer require par/core
 ```
 
 This package depends on the pecl [Data Structures](https://github.com/php-ds/ext-ds) package. It will work without, but installing it will improve performance greatly.
+
+To install this package run:
+
+```bash
+pecl install ds
+```
 
 Test
 ----
