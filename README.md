@@ -6,6 +6,9 @@ PHP Addition Repository - Core
 
 A multitude of data structures to improve on PHP.
 
+See [docs](https://php-addition-repository.github.io/core/) for more information.
+
+
 Install
 -------
 
