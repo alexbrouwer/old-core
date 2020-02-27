@@ -10,6 +10,10 @@ workspace:
 check:
 	$(MAKE) docker-exec CONTAINER=workspace CMD="composer check"
 
+build-docs:
+	rm -rf build/phpdoc
+	$(MAKE) docker-exec CONTAINER=phpdoc CMD="run --visibility public,protected --template updated"
+
 ##@ [Docker] Build / Infrastructure
 .docker/.env:
 	cp $(DOCKER_COMPOSE_DIR)/.env.example $(DOCKER_COMPOSE_DIR)/.env
@@ -41,7 +45,7 @@ docker-down: docker-init ## Stop all docker containers. To only stop one contain
 	$(DOCKER_COMPOSE) down $(CONTAINER)
 
 docker-login: docker-init ## SSH into a container use CONTAINER=<service>
-	$(DOCKER_COMPOSE) exec $(CONTAINER) sh
+	$(DOCKER_COMPOSE) run $(CONTAINER) sh
 
 docker-exec: docker-init ## SSH into a container use CONTAINER=<service>
-	$(DOCKER_COMPOSE) exec $(CONTAINER) sh
+	$(DOCKER_COMPOSE) run $(CONTAINER) $(CMD)

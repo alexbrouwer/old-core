@@ -1,6 +1,6 @@
 nav:
   - Home: index.md
 theme: readthedocs
-site_name: 'par-core'
+site_name: 'PHP Addition Repository - Core'
 site_description: 'Core PHP data structures'
 repo_url: 'https://github.com/php-addition-repository/core'

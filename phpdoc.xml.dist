@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>PHP Additional Repository - Core</title>
+    <parser>
+        <default-package-name>PAR\Core</default-package-name>
+        <target>build/phpdoc</target>
+        <markers>
+            <item>TODO</item>
+        </markers>
+    </parser>
+    <transformer>
+        <target>build/phpdoc</target>
+    </transformer>
+    <transformations>
+        <template name="default"/>
+    </transformations>
+    <files>
+        <directory>src</directory>
+    </files>
+</phpdoc>

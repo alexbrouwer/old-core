@@ -11,10 +11,18 @@ services:
       context: .
       dockerfile: .docker/workspace/Dockerfile
       args:
-          - TARGET_PHP_VERSION=${PHP_VERSION-7.4}
-          - TZ=${TIMEZONE-UTC}
+        - TARGET_PHP_VERSION=${PHP_VERSION-7.4}
+        - TZ=${TIMEZONE-UTC}
     volumes:
-        - .:/app
+      - .:/app
+    tty: true
+    networks:
+      - backend
+  phpdoc:
+    image: alexbrouwer/phpdoc:latest
+    user: 1000:1000
+    volumes:
+      - .:/data
     tty: true
     networks:
       - backend
