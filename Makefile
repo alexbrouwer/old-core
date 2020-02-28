@@ -8,7 +8,7 @@ workspace:
 	$(MAKE) docker-login CONTAINER=workspace
 
 check:
-	$(MAKE) docker-exec CONTAINER=workspace CMD="composer check"
+	$(MAKE) docker-run CONTAINER=workspace CMD="composer check"
 
 ##@ [Docker] Build / Infrastructure
 .docker/.env:
@@ -41,7 +41,7 @@ docker-down: docker-init ## Stop all docker containers. To only stop one contain
 	$(DOCKER_COMPOSE) down $(CONTAINER)
 
 docker-login: docker-init ## SSH into a container use CONTAINER=<service>
-	$(DOCKER_COMPOSE) exec $(CONTAINER) sh
+	$(DOCKER_COMPOSE) run $(CONTAINER) sh
 
-docker-exec: docker-init ## SSH into a container use CONTAINER=<service>
-	$(DOCKER_COMPOSE) exec $(CONTAINER) sh
+docker-run: docker-init ## SSH into a container use CONTAINER=<service>
+	$(DOCKER_COMPOSE) run $(CONTAINER) $(CMD)
