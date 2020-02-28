@@ -11,8 +11,10 @@ use TypeError;
  */
 final class HashCode
 {
-
-    public const MAX_RECURSION_DEPTH = 10;
+    /**
+     * @var int The default maximum depth of recursion
+     */
+    public const DEFAULT_RECURSION_DEPTH = 10;
 
     /**
      * Transform any value to a hash, recursion safe.
@@ -22,7 +24,7 @@ final class HashCode
      *
      * @return int The resulting hash
      */
-    public static function forAny($value, int $maxDepth = self::MAX_RECURSION_DEPTH): int
+    public static function forAny($value, int $maxDepth = self::DEFAULT_RECURSION_DEPTH): int
     {
         $type = gettype($value);
         switch ($type) {
@@ -60,7 +62,7 @@ final class HashCode
      *
      * @return int The resulting hash
      */
-    public static function forArray(array $values, int $maxDepth = self::MAX_RECURSION_DEPTH): int
+    public static function forArray(array $values, int $maxDepth = self::DEFAULT_RECURSION_DEPTH): int
     {
         if ($maxDepth === 0 || empty($values)) {
             return 0;
