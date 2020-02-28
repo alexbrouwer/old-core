@@ -9,14 +9,21 @@ use Ds\Set as CompositeSet;
 use PAR\Core\Exception\InvalidArgumentException;
 
 /**
- *
+ * @template   E
+ * @implements Set<E>
  */
 abstract class AbstractSet extends AbstractCollection implements Set
 {
+    /**
+     * @var string
+     */
     protected string $elementType;
 
     private ?Closure $typeTest = null;
 
+    /**
+     * @var CompositeSet<E>|null
+     */
     private ?CompositeSet $composite = null;
 
     /**
@@ -125,7 +132,7 @@ abstract class AbstractSet extends AbstractCollection implements Set
     /**
      * @inheritDoc
      *
-     * @return array<mixed>
+     * @return array<E>
      */
     public function toArray(): array
     {
@@ -134,6 +141,7 @@ abstract class AbstractSet extends AbstractCollection implements Set
 
     /**
      * @inheritDoc
+     * @return CompositeSet<E>
      */
     protected function composite(): CompositeSet
     {
@@ -147,7 +155,7 @@ abstract class AbstractSet extends AbstractCollection implements Set
     /**
      * Asserts if elements are of expected type
      *
-     * @param iterable<mixed> $elements sThe elements of which to assert the type
+     * @param iterable<E> $elements The elements of which to assert the type
      *
      * @throws InvalidArgumentException If one or more of the elements does not match the expected elementType
      */
@@ -161,7 +169,7 @@ abstract class AbstractSet extends AbstractCollection implements Set
     /**
      * Asserts if element is of expected type
      *
-     * @param mixed $element The element of which to assert the type
+     * @param E $element The element of which to assert the type
      *
      * @throws InvalidArgumentException If element does not match the expected elementType
      */
@@ -174,9 +182,9 @@ abstract class AbstractSet extends AbstractCollection implements Set
     }
 
     /**
-     * @param string $type              The type of element to include in this set,
-     * @param callable $typeTest        A callable that is able to test if element is of the correct type
-     * @param iterable<mixed> $elements The elements to add to this set
+     * @param string $type          The type of element to include in this set,
+     * @param callable $typeTest    A callable that is able to test if element is of the correct type
+     * @param iterable<E> $elements The elements to add to this set
      */
     protected function __construct(string $type, callable $typeTest, iterable $elements)
     {
