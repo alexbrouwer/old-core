@@ -6,6 +6,11 @@ namespace PAR\Core;
 
 use Closure;
 
+/**
+ * This class consists of static utility methods for operating on values.
+ *
+ * @since 1.0
+ */
 final class Values
 {
     /**
