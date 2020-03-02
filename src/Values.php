@@ -56,6 +56,7 @@ final class Values
             return HashCode::forAny($value);
         }
 
+        /** @var bool|float|int|string|null $value */
         return $value;
     }
 
@@ -115,7 +116,7 @@ final class Values
             $type = sprintf('resource(%s)', $resourceType);
         }
 
-        return sprintf('%s@%s', $type, $hash);
+        return sprintf('%s@%s', $type, (string)$hash);
     }
 
     /**
@@ -159,7 +160,6 @@ final class Values
             case 'NULL':
                 return 'null';
             case 'array':
-            case 'float':
             case 'string':
                 $type = $nativeType;
                 break;

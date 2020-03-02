@@ -11,8 +11,7 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 final class HashableEquals extends Constraint
 {
-    /** @var Hashable */
-    private $object;
+    private Hashable $object;
 
     public function __construct(Hashable $object)
     {
@@ -24,7 +23,7 @@ final class HashableEquals extends Constraint
      */
     public function toString(): string
     {
-        return sprintf('equals %s', $this->object);
+        return sprintf('equals %s', (string)$this->object);
     }
 
     /**
@@ -41,7 +40,7 @@ final class HashableEquals extends Constraint
     protected function failureDescription($other): string
     {
         if ($other instanceof Hashable) {
-            $otherExport = $other;
+            $otherExport = (string)$other;
         } else {
             $otherExport = $this->exporter()->export($other);
         }

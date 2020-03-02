@@ -31,7 +31,6 @@ final class HashCode
             case 'integer':
                 return static::forInt($value);
             case 'double':
-            case 'float':
                 return self::forFloat($value);
             case 'string':
                 return static::forString($value);
@@ -66,10 +65,12 @@ final class HashCode
             return 0;
         }
 
-        $hashes = [];
-        foreach ($values as $value) {
-            $hashes[] = static::forAny($value, $maxDepth - 1);
-        }
+        $hashes = array_map(
+            static function ($value) use ($maxDepth) {
+                return static::forAny($value, $maxDepth - 1);
+            },
+            $values
+        );
 
         if (array_values($values) !== $values) {
             $hashes[] = static::forArray(array_keys($values), 1);
@@ -156,6 +157,11 @@ final class HashCode
      */
     public static function forResource($value): int
     {
+        // PHP does not (yet) support a argument type for resource AND handles closed resource differently.
+        if (Values::typeOf($value) !== 'resource') {
+            throw new TypeError(sprintf('Argument 1 passed to %s() must be of the type resource, %s given', __FUNCTION__, Values::typeOf($value)));
+        }
+
         return static::forInt((int)$value);
     }
 
