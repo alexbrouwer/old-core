@@ -7,11 +7,14 @@ namespace PARTest\Core\Values;
 use PAR\Core\Hashable;
 use PAR\Core\HashCode;
 use PAR\Core\Values;
+use PARTest\Core\Traits\ResourceTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class HashTest extends TestCase
 {
+    use ResourceTrait;
+
     /**
      * @test
      */
@@ -28,6 +31,9 @@ final class HashTest extends TestCase
         $this->assertEquals($expectedHash, Values::hash($hashable));
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideScalarAndNullValue(): array
     {
         return [
@@ -50,14 +56,15 @@ final class HashTest extends TestCase
         $this->assertEquals($scalarOrNullValue, Values::hash($scalarOrNullValue));
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideNonScalarOrNullValueAndHash(): array
     {
         $obj = new stdClass();
 
-        $resource = fopen('php://memory', 'rb');
-
-        $closedResource = fopen('php://memory', 'rb');
-        fclose($closedResource);
+        $resource = $this->createResource();
+        $closedResource = $this->createClosedResource();
 
         return [
             'object' => [$obj, HashCode::forObject($obj)],

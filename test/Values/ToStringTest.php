@@ -6,11 +6,14 @@ namespace PARTest\Core\Values;
 
 use PAR\Core\Hashable;
 use PAR\Core\Values;
+use PARTest\Core\Traits;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class ToStringTest extends TestCase
 {
+    use Traits\ResourceTrait;
+
     /**
      * @test
      */
@@ -27,6 +30,9 @@ final class ToStringTest extends TestCase
         $this->assertEquals($expected, Values::toString($hashable));
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideNativeValuesWithStringRepresentation(): array
     {
         $obj = new stdClass();
@@ -34,12 +40,11 @@ final class ToStringTest extends TestCase
         $anonObj = new class() {
         };
 
-        $resource = fopen('php://memory', 'rb');
+        $resource = $this->createResource();
 
-        $closedResource = fopen('php://memory', 'rb');
-        fclose($closedResource);
+        $closedResource = $this->createClosedResource();
 
-        $closure = static function () {
+        $closure = static function (): void {
         };
 
         return [

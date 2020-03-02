@@ -6,16 +6,17 @@ namespace PARTest\Core;
 
 use PAR\Core\HashCode;
 use PARTest\Core\Fixtures\GenericHashable;
+use PARTest\Core\Traits\ResourceTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class HashCodeTest extends TestCase
 {
-    /**
-     * @var resource[]
-     */
-    private array $resources = [];
+    use ResourceTrait;
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForStringValue(): array
     {
         return [
@@ -23,6 +24,9 @@ final class HashCodeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForFloatValue(): array
     {
         return [
@@ -32,12 +36,13 @@ final class HashCodeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForResourceValue(): array
     {
-        $resource = $this->getResource();
-
-        $closedResource = $this->getResource();
-        fclose($closedResource);
+        $resource = $this->createResource();
+        $closedResource = $this->createClosedResource();
 
         return [
             'resource' => [$resource, (int)$resource],
@@ -45,6 +50,9 @@ final class HashCodeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForObjectValue(): array
     {
         $obj = new stdClass();
@@ -56,6 +64,9 @@ final class HashCodeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForIntValue(): array
     {
         return [
@@ -66,6 +77,9 @@ final class HashCodeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForArrayValue(): array
     {
         return [
@@ -75,6 +89,9 @@ final class HashCodeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForBooleanValue(): array
     {
         return [
@@ -83,6 +100,9 @@ final class HashCodeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function provideForAnyValue(): array
     {
         return array_merge(
@@ -139,7 +159,7 @@ final class HashCodeTest extends TestCase
      * @test
      * @dataProvider provideForResourceValue
      *
-     * @param $value
+     * @param resource $value
      * @param int $expectedHash
      */
     public function itCanCreateHashForResourceValue($value, int $expectedHash): void
@@ -182,18 +202,4 @@ final class HashCodeTest extends TestCase
     {
         $this->assertEquals($expectedHash, HashCode::forAny($value));
     }
-
-    protected function tearDown(): void
-    {
-        foreach ($this->resources as $resource) {
-            fclose($resource);
-        }
-        parent::tearDown();
-    }
-
-    private function getResource()
-    {
-        return $this->resources[] = fopen('php://memory', 'rb');
-    }
-
 }

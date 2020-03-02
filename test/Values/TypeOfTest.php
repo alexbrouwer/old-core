@@ -5,19 +5,24 @@ declare(strict_types=1);
 namespace PARTest\Core\Values;
 
 use PAR\Core\Values;
+use PARTest\Core\Traits\ResourceTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class TypeOfTest extends TestCase
 {
+    use ResourceTrait;
+
+    /**
+     * @return array<string, array>
+     */
     public function providedValuesWithExpectedType(): array
     {
         $obj = new stdClass();
 
-        $resource = fopen('php://memory', 'rb');
+        $resource = $this->createResource();
 
-        $closedResource = fopen('php://memory', 'rb');
-        fclose($closedResource);
+        $closedResource = $this->createClosedResource();
 
         return [
             'string' => ['foo', 'string'],
